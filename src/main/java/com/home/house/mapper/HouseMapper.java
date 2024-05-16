@@ -1,6 +1,7 @@
 package com.home.house.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,6 +17,7 @@ public interface HouseMapper {
 	List<String> getDongList(String gugunName);
 	List<String> getYearList();
 	List<String> getMonthList();
+	List<HouseInfo> searchByDongGugunAndDong(Map<String, String> params);
 	List<HouseInfo> searchBySelectOption(FindDeal findDeal);
 	
 }

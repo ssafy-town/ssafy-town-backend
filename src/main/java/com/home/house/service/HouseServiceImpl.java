@@ -1,6 +1,7 @@
 package com.home.house.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,11 @@ public class HouseServiceImpl implements HouseService{
 		return houseMapper.getMonthList();
 	}
 
-
+	@Override
+	public List<HouseInfo> searchByDongGugunAndDong(Map<String, String> params){
+		return houseMapper.searchByDongGugunAndDong(params);
+	}
+	
 	@Override
 	public List<HouseInfo> searchBySelectOption(FindDeal findDeal) {
 		return houseMapper.searchBySelectOption(findDeal);

@@ -1,6 +1,8 @@
 package com.home.house.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,21 +79,36 @@ public class HouseController {
 	
 //	실거래가 가져오기 - 시도, 구군, 동, 년, 월 선택
 	@GetMapping("/searchBySelectOption")
-	public ResponseEntity<?> searchBySelectOption(@RequestParam("sidoName") String sidoName, @RequestParam("gugunName") String gugunName, @RequestParam("dongName") String dongName, @RequestParam("year") String year, @RequestParam("month") String month) throws Exception {
-		try {
-			FindDeal findDeal = new FindDeal();
-			findDeal.setSidoName(sidoName);
-			findDeal.setGugunName(gugunName);
-			findDeal.setDongName(dongName);
-			findDeal.setYear(year);
-			findDeal.setMonth(month);
-			
-			System.out.println(sidoName);
-			return new ResponseEntity<>(houseService.searchBySelectOption(findDeal), HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("searchBySelctOption failed");
-		}
+	public ResponseEntity<?> searchBySelectOption(
+	        @RequestParam("sidoName") String sidoName,
+	        @RequestParam("gugunName") String gugunName,
+	        @RequestParam("dongName") String dongName,
+	        @RequestParam(value = "year", required = false) String year,
+	        @RequestParam(value = "month", required = false) String month) throws Exception {
+	    try {
+	    	 Map<String, String> params = new HashMap<>();
+	         params.put("sidoName", sidoName);
+	         params.put("gugunName", gugunName);
+	         params.put("dongName", dongName);
+	        if (year == null || month == null) {
+	            // year 또는 month 값이 없는 경우 전체 조회
+	            return new ResponseEntity<>(houseService.searchByDongGugunAndDong(params),HttpStatus.OK);
+	        } else {
+	            FindDeal findDeal = new FindDeal();
+	            findDeal.setSidoName(sidoName);
+	            findDeal.setGugunName(gugunName);
+	            findDeal.setDongName(dongName);
+	            findDeal.setYear(year);
+	            findDeal.setMonth(month);
+
+	            System.out.println(sidoName);
+	            return new ResponseEntity<>(houseService.searchBySelectOption(findDeal), HttpStatus.OK);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("searchBySelectOption failed");
+	    }
 	}
+
 
 }
