@@ -22,6 +22,12 @@ public class MemberServiceImpl implements MemberService {
 	public void signUp(Member member){
 		memberMapper.signUp(member);
 	}
+	
+	@Override
+	public boolean isMemberExists(String id) {
+	    Member member = memberMapper.searchMember(id);
+	    return member != null;
+	}
 
 	@Override
 	public int login(Member member){
