@@ -60,7 +60,7 @@
 	</select>
 	
 	
-	<select id="searchBySelectOptionExcludeDate" parameterType="map" resultType="com.home.house.model.HouseInfo">
+<select id="searchBySelectOptionExcludeDate" parameterType="map" resultType="com.home.house.model.HouseInfo">
     SELECT no, dong, apartmentName, aptCode, dealAmount,
            buildYear, dealYear, dealMonth, dealDay,
            area, floor, lat, lng, jibun
@@ -69,20 +69,22 @@
     WHERE dongCode = (SELECT DISTINCT dongCode
                       FROM dongcode
                       WHERE sidoName = #{sidoName} AND gugunName = #{gugunName} AND dongName = #{dongName})
-	</select>
-	
+    ORDER BY dealYear DESC, dealMonth DESC
+</select>
 
-	<select id="searchBySelectOption" parameterType="com.home.house.model.FindDeal" resultType="com.home.house.model.HouseInfo">
-	    SELECT no, dong, apartmentName, aptCode, dealAmount,
-	           buildYear, dealYear, dealMonth, dealDay,
-	           area, floor, lat, lng, jibun
-	    FROM housedeal
-	    JOIN houseinfo USING (aptCode)
-	    WHERE dongCode = (SELECT DISTINCT dongCode
-	                      FROM dongcode
-	                      WHERE sidoName = #{sidoName} AND gugunName = #{gugunName} AND dongName = #{dongName})
-	      AND dealYear = #{year}
-	      AND dealMonth = #{month}
-	</select>
+<select id="searchBySelectOption" parameterType="com.home.house.model.FindDeal" resultType="com.home.house.model.HouseInfo">
+    SELECT no, dong, apartmentName, aptCode, dealAmount,
+           buildYear, dealYear, dealMonth, dealDay,
+           area, floor, lat, lng, jibun
+    FROM houseinfo
+    JOIN housedeal USING (aptCode)
+    WHERE dongCode = (SELECT DISTINCT dongCode
+                      FROM dongcode
+                      WHERE sidoName = #{sidoName} AND gugunName = #{gugunName} AND dongName = #{dongName})
+          AND dealYear = #{year}
+          AND dealMonth = #{month}
+    ORDER BY dealYear DESC, dealMonth DESC
+</select>
+
 
 </mapper>

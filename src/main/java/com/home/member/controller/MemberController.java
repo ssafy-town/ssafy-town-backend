@@ -53,7 +53,7 @@ public class MemberController {
 	        return ResponseEntity.accepted().body("회원 가입에 성공했습니다.");
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 가입에 실패햇습니다.");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 가입에 실패했습니다.");
 	    }
 	}
 	
