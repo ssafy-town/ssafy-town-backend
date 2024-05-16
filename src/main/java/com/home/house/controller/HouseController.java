@@ -28,16 +28,15 @@ public class HouseController {
 	
 	// 실거래가 검색 - 동이름
 	// http://localhost/house/searchByDong/동홍동
-	@GetMapping("/searchByDong/{dong}")
-	public ResponseEntity<?> searchByDong(@PathVariable("dongName") String dongName) throws Exception {
-		System.out.println(dongName);
+	@GetMapping("/searchByDong")
+	public ResponseEntity<?> searchByDong(@RequestParam("dongName") String dongName) throws Exception {
 		return new ResponseEntity<List<HouseInfo>>(houseService.searchByDong(dongName), HttpStatus.OK);
 	}
 	
 	// 실거래가 검색 - 키워드
 	// http://localhost/house/searchByApt/산격대우
-	@GetMapping("/searchByKeyword/{keyword}")
-	public ResponseEntity<?> searchByKeyword(@PathVariable("keyword") String keyword) throws Exception { 
+	@GetMapping("/searchByKeyword")
+	public ResponseEntity<?> searchByKeyword(@RequestParam("keyword") String keyword) throws Exception { 
 		return new ResponseEntity<List<HouseInfo>>(houseService.searchByKeyword(keyword), HttpStatus.OK);
 	}
 	

@@ -81,6 +81,7 @@ public class MemberController {
 			session.removeAttribute("member");
 			return ResponseEntity.accepted().body("logout succeed");
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("logout failed");
 		}
 	}
