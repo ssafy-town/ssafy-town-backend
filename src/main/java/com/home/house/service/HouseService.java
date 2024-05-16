@@ -6,11 +6,11 @@ import com.home.house.model.FindDeal;
 import com.home.house.model.HouseInfo;
 
 public interface HouseService {
-	List<HouseInfo> searchByDong(String dong);
+	List<HouseInfo> searchByDong(String dongName);
 	List<HouseInfo> searchByApt(String aptName);
 	List<String> getSidoList();
-	List<String> getGugunList();
-	List<String> getDongList();
+	List<String> getGugunList(String sidoName);
+	List<String> getDongList(String gugunName);
 	List<String> getYearList();
 	List<String> getMonthList();
 	List<HouseInfo> searchBySelectOption(FindDeal findDeal);

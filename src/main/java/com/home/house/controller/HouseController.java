@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.home.house.model.FindDeal;
@@ -26,9 +27,9 @@ public class HouseController {
 	// 실거래가 검색 - 동이름
 	// http://localhost/house/searchByDong/동홍동
 	@GetMapping("/searchByDong/{dong}")
-	public ResponseEntity<?> searchByDong(@PathVariable("dong") String dong) throws Exception {
-		System.out.println(dong);
-		return new ResponseEntity<List<HouseInfo>>(houseService.searchByDong(dong), HttpStatus.OK);
+	public ResponseEntity<?> searchByDong(@PathVariable("dongName") String dongName) throws Exception {
+		System.out.println(dongName);
+		return new ResponseEntity<List<HouseInfo>>(houseService.searchByDong(dongName), HttpStatus.OK);
 	}
 	
 	// 실거래가 검색 - 키워드
@@ -46,19 +47,18 @@ public class HouseController {
 		return new ResponseEntity<List<String>>(houseService.getSidoList(), HttpStatus.OK);
 	}
 	
-	
-	// 전체 구군 목록 가져오기 
-	// http://localhost/house/getGugunList
+	// 선택한 시도의 전체 구군 목록 가져오기 
+//	http://localhost/house/getGugunList?sidoName=경상북도
 	@GetMapping("/getGugunList")
-	public ResponseEntity<?> getGugunList() throws Exception { 
-		return new ResponseEntity<List<String>>(houseService.getGugunList(), HttpStatus.OK);
+	public ResponseEntity<?> getGugunList(@RequestParam("sidoName") String sidoName) throws Exception { 
+		return new ResponseEntity<List<String>>(houseService.getGugunList(sidoName), HttpStatus.OK);
 	}
 	
-	// 전체 동 목록 가져오기 
-	// http://localhost/house/getDongList
+	// 선택한 구군의 전체 동 목록 가져오기 
+//	http://localhost/house/getDongList?gugunName=동작구
 	@GetMapping("/getDongList")
-	public ResponseEntity<?> getDongList() throws Exception { 
-		return new ResponseEntity<List<String>>(houseService.getDongList(), HttpStatus.OK);
+	public ResponseEntity<?> getDongList(@RequestParam("gugunName") String gugunName) throws Exception { 
+		return new ResponseEntity<List<String>>(houseService.getDongList(gugunName), HttpStatus.OK);
 	}
 	
 	// 전체 년(2015-2022) 목록 가져오기 
@@ -76,16 +76,17 @@ public class HouseController {
 	}
 	
 //	실거래가 가져오기 - 시도, 구군, 동, 년, 월 선택
-	@GetMapping("/searchBySelectOption/{sido}/{gugun}/{dong}/{year}/{month}")
-	public ResponseEntity<?> searchBySelectOption(@PathVariable("sido") String sido, @PathVariable("gugun") String gugun, @PathVariable("dong") String dong, @PathVariable("year") String year, @PathVariable("month") String month) throws Exception {
+	@GetMapping("/searchBySelectOption")
+	public ResponseEntity<?> searchBySelectOption(@RequestParam("sidoName") String sidoName, @RequestParam("gugunName") String gugunName, @RequestParam("dongName") String dongName, @RequestParam("year") String year, @RequestParam("month") String month) throws Exception {
 		try {
 			FindDeal findDeal = new FindDeal();
-			findDeal.setSido(sido);
-			findDeal.setGugun(gugun);
-			findDeal.setDong(dong);
+			findDeal.setSidoName(sidoName);
+			findDeal.setGugunName(gugunName);
+			findDeal.setDongName(dongName);
 			findDeal.setYear(year);
 			findDeal.setMonth(month);
 			
+			System.out.println(sidoName);
 			return new ResponseEntity<>(houseService.searchBySelectOption(findDeal), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

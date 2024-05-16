@@ -13,7 +13,7 @@
 		using(aptCode)
 		where dongCode = (select distinct dongCode
 		from dongcode
-		where dongName = #{dong}
+		where dongName = #{dongName}
 		LIMIT 1)
 	</select>
 
@@ -30,18 +30,23 @@
 		resultType="String">
 		select distinct sidoName
 		from dongcode
+		order by sidoName
 	</select>
 
 	<select id="getGugunList" parameterType="string"
 		resultType="String">
 		select distinct gugunName
 		from dongcode
+		where sidoName =#{sidoName} and gugunName is not null	
+		order by gugunName
 	</select>
 
 	<select id="getDongList" parameterType="string"
 		resultType="String">
 		select distinct dongName
 		from dongcode
+		where gugunName =#{gugunName} and dongName is not null
+		order by dongName
 	</select>
 	
 	<select id="getYearList" parameterType="string"
@@ -64,7 +69,7 @@
 	    JOIN houseinfo USING (aptCode)
 	    WHERE dongCode = (SELECT DISTINCT dongCode
 	                      FROM dongcode
-	                      WHERE sidoName = #{sido} AND gugunName = #{gugun} AND dongName = #{dong})
+	                      WHERE sidoName = #{sidoName} AND gugunName = #{gugunName} AND dongName = #{dongName})
 	      AND dealYear = #{year}
 	      AND dealMonth = #{month}
 	</select>

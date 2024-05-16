@@ -19,8 +19,8 @@ public class HouseServiceImpl implements HouseService{
 	
 
 	@Override
-	public List<HouseInfo> searchByDong(String dong) {
-		return houseMapper.searchByDong(dong);
+	public List<HouseInfo> searchByDong(String dongName) {
+		return houseMapper.searchByDong(dongName);
 	}
 
 	@Override
@@ -34,13 +34,13 @@ public class HouseServiceImpl implements HouseService{
 	}
 
 	@Override
-	public List<String> getGugunList() {
-		return houseMapper.getGugunList();
+	public List<String> getGugunList(String sidoName) {
+		return houseMapper.getGugunList(sidoName);
 	}
 
 	@Override
-	public List<String> getDongList() {
-		return houseMapper.getDongList();
+	public List<String> getDongList(String gugunName) {
+		return houseMapper.getDongList(gugunName);
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package com.home.house.model;
 
 public class FindDeal {
-	private String sido;
-	private String gugun;
-	private String dong;
+	private String sidoName;
+	private String gugunName;
+	private String dongName;
 	private String year;
 	private String month;
 	
@@ -12,32 +12,32 @@ public class FindDeal {
 		super();
 	}
 	
-	public FindDeal(String sido, String gugun, String dong, String year, String month) {
+	public FindDeal(String sidoName, String gugunName, String dongName, String year, String month) {
 		super();
-		this.sido = sido;
-		this.gugun = gugun;
-		this.dong = dong;
+		this.sidoName = sidoName;
+		this.gugunName = gugunName;
+		this.dongName = dongName;
 		this.year = year;
 		this.month = month;
 	}
 	
-	public String getSido() {
-		return sido;
+	public String getSidoName() {
+		return sidoName;
 	}
-	public void setSido(String sido) {
-		this.sido = sido;
+	public void setSidoName(String sidoName) {
+		this.sidoName = sidoName;
 	}
-	public String getGugun() {
-		return gugun;
+	public String getGugunName() {
+		return gugunName;
 	}
-	public void setGugun(String gugun) {
-		this.gugun = gugun;
+	public void setGugunName(String gugunName) {
+		this.gugunName = gugunName;
 	}
-	public String getDong() {
-		return dong;
+	public String getDongName() {
+		return dongName;
 	}
-	public void setDong(String dong) {
-		this.dong = dong;
+	public void setDongName(String dongName) {
+		this.dongName = dongName;
 	}
 	public String getYear() {
 		return year;
