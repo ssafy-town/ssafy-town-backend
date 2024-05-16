@@ -60,7 +60,7 @@
 	</select>
 	
 	
-	<select id="searchByDongGugunAndDong" parameterType="map" resultType="com.home.house.model.HouseInfo">
+	<select id="searchBySelectOptionExcludeDate" parameterType="map" resultType="com.home.house.model.HouseInfo">
     SELECT no, dong, apartmentName, aptCode, dealAmount,
            buildYear, dealYear, dealMonth, dealDay,
            area, floor, lat, lng, jibun

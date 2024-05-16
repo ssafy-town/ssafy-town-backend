@@ -17,7 +17,7 @@ public interface HouseMapper {
 	List<String> getDongList(String gugunName);
 	List<String> getYearList();
 	List<String> getMonthList();
-	List<HouseInfo> searchByDongGugunAndDong(Map<String, String> params);
+	List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
 	List<HouseInfo> searchBySelectOption(FindDeal findDeal);
 	
 }

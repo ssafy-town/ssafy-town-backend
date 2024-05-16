@@ -55,8 +55,8 @@ public class HouseServiceImpl implements HouseService{
 	}
 
 	@Override
-	public List<HouseInfo> searchByDongGugunAndDong(Map<String, String> params){
-		return houseMapper.searchByDongGugunAndDong(params);
+	public List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params){
+		return houseMapper.searchBySelectOptionExcludeDate(params);
 	}
 	
 	@Override

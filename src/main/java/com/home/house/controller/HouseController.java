@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.home.house.service.HouseService;
 
 @RestController
 @RequestMapping("/house")
+@CrossOrigin("*")
 public class HouseController {
 
 	private final HouseService houseService;
@@ -91,7 +93,7 @@ public class HouseController {
 	         params.put("dongName", dongName);
 	        if (year == null || month == null) {
 	            // year 또는 month 값이 없는 경우 전체 조회
-	            return new ResponseEntity<>(houseService.searchByDongGugunAndDong(params),HttpStatus.OK);
+	            return new ResponseEntity<>(houseService.searchBySelectOptionExcludeDate(params),HttpStatus.OK);
 	        } else {
 	            FindDeal findDeal = new FindDeal();
 	            findDeal.setSidoName(sidoName);
