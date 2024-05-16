@@ -17,13 +17,13 @@
 		LIMIT 1)
 	</select>
 
-	<select id="searchByApt" parameterType="string"
+	<select id="searchByKeyword" parameterType="string"
 		resultType="houseInfo">
 		select no, dong, apartmentName, aptCode, dealAmount, buildYear, dealYear,
 		dealMonth, dealDay, area, floor, lat, lng, jibun
 		from housedeal
 		join houseinfo using(aptCode)
-		where apartmentName like CONCAT('%', #{aptName}, '%')
+		where apartmentName like CONCAT('%', #{keyword}, '%')
 	</select>
 
 	<select id="getSidoList" parameterType="string"

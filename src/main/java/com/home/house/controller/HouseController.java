@@ -36,9 +36,9 @@ public class HouseController {
 	
 	// 실거래가 검색 - 키워드
 	// http://localhost/house/searchByApt/산격대우
-	@GetMapping("/searchByApt/{name}")
-	public ResponseEntity<?> searchByApt(@PathVariable("name") String name) throws Exception { 
-		return new ResponseEntity<List<HouseInfo>>(houseService.searchByApt(name), HttpStatus.OK);
+	@GetMapping("/searchByKeyword/{keyword}")
+	public ResponseEntity<?> searchByKeyword(@PathVariable("keyword") String keyword) throws Exception { 
+		return new ResponseEntity<List<HouseInfo>>(houseService.searchByKeyword(keyword), HttpStatus.OK);
 	}
 	
 	

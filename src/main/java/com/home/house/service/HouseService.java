@@ -8,7 +8,7 @@ import com.home.house.model.HouseInfo;
 
 public interface HouseService {
 	List<HouseInfo> searchByDong(String dongName);
-	List<HouseInfo> searchByApt(String aptName);
+	List<HouseInfo> searchByKeyword(String keyword);
 	List<String> getSidoList();
 	List<String> getGugunList(String sidoName);
 	List<String> getDongList(String gugunName);

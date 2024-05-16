@@ -25,8 +25,8 @@ public class HouseServiceImpl implements HouseService{
 	}
 
 	@Override
-	public List<HouseInfo> searchByApt(String aptName) {
-		return houseMapper.searchByApt(aptName);
+	public List<HouseInfo> searchByKeyword(String keyword) {
+		return houseMapper.searchByKeyword(keyword);
 	}
 
 	@Override
