@@ -28,7 +28,16 @@ public class MemberController {
 		this.memberService = memberService;
 	}
 	
-	
+//	[POST] 회원가입
+//	http://localhost:80/member/signUp
+//	{
+//	    "id" : "abcd",
+//	    "pw" : "1234",
+//	    "name" : "김철수",
+//	    "addr" : "구미 진평동 사랑채",
+//	    "tel" : "010-9323-1234"
+//
+//	}
 	@PostMapping("/signUp")
 	public ResponseEntity<?> signup(@RequestBody Member member) {
 		try {
@@ -40,6 +49,12 @@ public class MemberController {
 		}
 	}
 	
+//	[POST] 로그인
+//	http://localhost:80/member/login
+//	{
+//	    "id" : "abcd",
+//	    "pw" : "1234",
+//	}
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Member member, HttpSession session) {
 		try {
@@ -58,6 +73,8 @@ public class MemberController {
 		}
 	}
 	
+//	[GET] 로그아웃
+//	http://localhost:80/member/logout
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 		try {
@@ -68,6 +85,8 @@ public class MemberController {
 		}
 	}
 	
+//	[GET] 회원 검색
+//	http://localhost:80/member/search/abcd
 	@GetMapping("/search/{id}")
 	public ResponseEntity<?> searchMember(@PathVariable("id") String id) {
 		try {
@@ -78,6 +97,8 @@ public class MemberController {
 		}
 	}
 	
+//	[DELETE] 회원 탈퇴
+//	http://localhost:80/member/deleteMember/abcd
 	@DeleteMapping("/deleteMember/{id}")
 	public ResponseEntity<?> deleteMember(@PathVariable("id") String id) {
 		try {
@@ -88,6 +109,16 @@ public class MemberController {
 		}
 	}
 	
+//	[PUT] 회원 정보 업데이트
+//	http://localhost:80/member/update
+//	{
+//	    "id" : "abcd",
+//	    "pw" : "1234",
+//	    "name" : "박미선",
+//	    "addr" : "대구시 대현동 경북대 기숙사",
+//	    "tel" : "010-9345-1234"
+//
+//	}
 	@PutMapping("/update")
 	public ResponseEntity<?> updateMember(@RequestBody Member member) {
 		try {
@@ -98,6 +129,8 @@ public class MemberController {
 		}
 	}
 	
+//	[GET] 회원 리스트 조회
+//	http://localhost:80/member/list
 	@GetMapping("/list")
 	public ResponseEntity<?> getMemberList() throws Exception { 
 		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
