@@ -136,8 +136,8 @@ public class MemberController {
 	
 	//	[GET] 회원 검색
 	// 	ex)
-	//	http://localhost:80/member/search/abcd
-	@GetMapping("/search/{id}")
+	//	http://localhost:80/member/searchMember/abcd
+	@GetMapping("/searchMember/{id}")
 	public ResponseEntity<?> searchMember(@PathVariable("id") String id) {
 		try {
 			Member member = memberService.searchMember(id);
@@ -169,7 +169,7 @@ public class MemberController {
 	
 	//	[PUT] 회원 정보 업데이트
 	// 	ex)
-	//	http://localhost:80/member/update
+	//	http://localhost:80/member/updateMember
 	//	{
 	//	    "id" : "abcd",
 	//	    "pw" : "1234",
@@ -178,7 +178,7 @@ public class MemberController {
 	//	    "tel" : "010-9345-1234"
 	//
 	//	}
-	@PutMapping("/update")
+	@PutMapping("/updateMember")
 	public ResponseEntity<?> updateMember(@RequestBody Member member) {
 		try {
 			int result = memberService.updateMember(member);
@@ -196,17 +196,24 @@ public class MemberController {
 	
 	//	[GET] 회원 리스트 조회
 	//	ex)
-	//	http://localhost:80/member/list
-	@GetMapping("/list")
+	//	http://localhost:80/member/memberList
+	@GetMapping("/memberList")
 	public ResponseEntity<?> getMemberList() throws Exception { 
 		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
 	}
 	
-	@PostMapping("/zzim")
+//	[POST] 찜하기
+	//	ex)
+	//	http://localhost:80/member/addZzim
+//	{
+//	    "userId" : "qwer",
+//	    "aptCode" : "47111000000006"
+//	}
+	@PostMapping("/addZzim")
 	public ResponseEntity<?> addZzim(@RequestBody ZzimApt zzimApt){
 		try {
 			memberService.addLike(zzimApt);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return ResponseEntity.accepted().body("찜추가에 성공했습니다.");		
 		}catch(Exception e) {
 			System.out.println("Error(" + this.getClass().getName() + ") "
 					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
@@ -214,6 +221,9 @@ public class MemberController {
 		}
 	}
 	
+	//	[GET] 찜 리스트 조회(id로)
+	//	ex)
+	//	http://localhost:80/member/zzimList/abcd
 	@GetMapping("/zzimList/{userId}")
 	public ResponseEntity<?> zzimList(@PathVariable("userId") String userId) {
 		try {
