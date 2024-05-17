@@ -20,7 +20,8 @@ public class HouseInfo {
 	private String lat;
 	private String lng;
 	private String jibun;
-	
+	private String img;
+
 	public HouseInfo() {}
 
 	public HouseInfo(int no) {
@@ -139,5 +140,13 @@ public class HouseInfo {
 		this.jibun = jibun;
 	}
 	
+	
+	public String getImg() {
+		return img;
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
+	}
 	
 }
