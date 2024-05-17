@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.home.member.model.Member;
@@ -224,9 +225,9 @@ public class MemberController {
 	
 	//	[GET] 찜 리스트 조회(id로)
 	//	ex)
-	//	http://localhost:80/member/zzimList/abcd
-	@GetMapping("/zzimList/{userId}")
-	public ResponseEntity<?> zzimList(@PathVariable("userId") String userId) {
+	//	http://localhost:80/member/zzimList?userId=abcd
+	@GetMapping("/zzimList")
+	public ResponseEntity<?> zzimList(@RequestParam("userId") String userId) {
 		try {
 			List<ZzimAptDetail> list = memberService.getZzimList(userId);
 				return new ResponseEntity<List<ZzimAptDetail>>(list, HttpStatus.OK);
@@ -238,8 +239,11 @@ public class MemberController {
 
 	}
 	
-	@DeleteMapping("/removeZzim/{aptCode}")
-	public ResponseEntity<?> removeZzim(@PathVariable("aptCode") String aptCode, HttpServletRequest request) {
+	//	[DELETE] 찜 삭제(aptCode로)
+	//	ex)
+	//	http://localhost/member/removeZzim?aptCode=47111000000002
+	@DeleteMapping("/removeZzim")
+	public ResponseEntity<?> removeZzim(@RequestParam("aptCode") String aptCode, HttpServletRequest request) {
 		try {
 			HttpSession session = request.getSession();
 			String id = (String)session.getAttribute("member");
