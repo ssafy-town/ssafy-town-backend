@@ -3,6 +3,8 @@ package com.home.member.service;
 import java.util.List;
 
 import com.home.member.model.Member;
+import com.home.member.model.ZzimApt;
+import com.home.member.model.ZzimAptDetail;
 
 public interface MemberService {
 	
@@ -13,4 +15,6 @@ public interface MemberService {
 	public int deleteMember(String id);
 	public int updateMember(Member member);
 	List<Member> getMemberList();
+	public void addLike(ZzimApt zzimApt);
+	public List<ZzimAptDetail> getZzimList(String userId);
 }

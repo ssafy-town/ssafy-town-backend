@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.home.member.model.Member;
+import com.home.member.model.ZzimApt;
+import com.home.member.model.ZzimAptDetail;
 import com.home.member.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
@@ -199,4 +201,30 @@ public class MemberController {
 	public ResponseEntity<?> getMemberList() throws Exception { 
 		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
 	}
+	
+	@PostMapping("/zzim")
+	public ResponseEntity<?> addZzim(@RequestBody ZzimApt zzimApt){
+		try {
+			memberService.addLike(zzimApt);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}catch(Exception e) {
+			System.out.println("Error(" + this.getClass().getName() + ") "
+					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
+	@GetMapping("/zzimList/{userId}")
+	public ResponseEntity<?> zzimList(@PathVariable("userId") String userId) {
+		try {
+			List<ZzimAptDetail> list = memberService.getZzimList(userId);
+				return new ResponseEntity<List<ZzimAptDetail>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Error(" + this.getClass().getName() + ") "
+					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
 }
