@@ -19,6 +19,7 @@ import com.home.member.model.ZzimApt;
 import com.home.member.model.ZzimAptDetail;
 import com.home.member.service.MemberService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -212,7 +213,7 @@ public class MemberController {
 	@PostMapping("/addZzim")
 	public ResponseEntity<?> addZzim(@RequestBody ZzimApt zzimApt){
 		try {
-			memberService.addLike(zzimApt);
+			memberService.addZzim(zzimApt);
 			return ResponseEntity.accepted().body("찜추가에 성공했습니다.");		
 		}catch(Exception e) {
 			System.out.println("Error(" + this.getClass().getName() + ") "
@@ -233,6 +234,22 @@ public class MemberController {
 			System.out.println("Error(" + this.getClass().getName() + ") "
 					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
 			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
+	@DeleteMapping("/removeZzim/{aptCode}")
+	public ResponseEntity<?> removeZzim(@PathVariable("aptCode") String aptCode, HttpServletRequest request) {
+		try {
+			HttpSession session = request.getSession();
+			String id = (String)session.getAttribute("member");
+			ZzimApt zzimApt = new ZzimApt(id , Long.parseLong(aptCode));
+			memberService.removeZzim(zzimApt);
+			return ResponseEntity.accepted().body("찜삭제에 성공했습니다.");		
+		} catch (Exception e) {
+			System.out.println("Error(" + this.getClass().getName() + ") "
+					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜삭제에 실패했습니다.");
 		}
 
 	}

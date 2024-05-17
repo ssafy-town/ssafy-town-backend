@@ -9,7 +9,7 @@ public class ZzimApt {
 		
 	}
 	
-	public ZzimApt(String userId, int aptCode) {
+	public ZzimApt(String userId, long aptCode) {
 		super();
 		this.userId = userId;
 		this.aptCode = aptCode;

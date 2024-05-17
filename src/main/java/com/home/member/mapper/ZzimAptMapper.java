@@ -10,6 +10,7 @@ import com.home.member.model.ZzimAptDetail;
 
 @Mapper
 public interface ZzimAptMapper {
-	public void addInterest(ZzimApt zzimApt);
+	public void addZzim(ZzimApt zzimApt);
 	public List<ZzimAptDetail> getZzimList(String userId);
+	void removeZzim(ZzimApt zzimApt);
 }

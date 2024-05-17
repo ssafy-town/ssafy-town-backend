@@ -63,12 +63,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void addLike(ZzimApt zzimApt) {
+	public void addZzim(ZzimApt zzimApt) {
 		Member findMember = memberMapper.searchMember(zzimApt.getUserId());
 		if(findMember==null) {
 			System.out.println("없는 회원. 예외처리 해야함.");
 		}
-		zzimAptMapper.addInterest(zzimApt);
+		zzimAptMapper.addZzim(zzimApt);
 		
 	}
 
@@ -83,4 +83,9 @@ public class MemberServiceImpl implements MemberService {
 	            throw new RuntimeException("Failed to retrieve Zzim list", e);
 	        }
 	    }
+
+	@Override
+	public void removeZzim(ZzimApt zzimApt) {
+		zzimAptMapper.removeZzim(zzimApt);
+	}
 }

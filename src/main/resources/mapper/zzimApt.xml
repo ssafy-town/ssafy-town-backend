@@ -4,7 +4,7 @@
 
 <mapper namespace="com.home.member.mapper.ZzimAptMapper">
 
-	<insert id="addInterest" parameterType="com.home.member.model.ZzimApt">
+	<insert id="addZzim" parameterType="com.home.member.model.ZzimApt">
 		insert into zzimApt(aptCode,userId) values (#{aptCode},#{userId})
 	</insert>
 	
@@ -20,5 +20,9 @@
                  houseinfo.jibun, houseinfo.lat, houseinfo.lng
         order by cnt desc;
     </select>
+    
+    <delete id="removeZzim" parameterType="com.home.member.model.ZzimApt">
+		delete from zzimApt where aptCode=#{aptCode} and userId=#{userId}
+	</delete>
 
 </mapper>
