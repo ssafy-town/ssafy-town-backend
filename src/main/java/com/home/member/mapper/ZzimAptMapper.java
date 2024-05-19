@@ -12,5 +12,6 @@ import com.home.member.model.ZzimAptDetail;
 public interface ZzimAptMapper {
 	public void addZzim(ZzimApt zzimApt);
 	public List<ZzimAptDetail> getZzimList(String userId);
+	public ZzimAptDetail getZzimListDetail(String aptCode);
 	void removeZzim(ZzimApt zzimApt);
 }

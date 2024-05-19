@@ -18,5 +18,6 @@ public interface MemberService {
 	List<Member> getMemberList();
 	public void addZzim(ZzimApt zzimApt);
 	public List<ZzimAptDetail> getZzimList(String userId);
+	public ZzimAptDetail getZzimListDetail(String aptCode);
 	void removeZzim(ZzimApt zzimApt);
 }

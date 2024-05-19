@@ -80,12 +80,23 @@ public class MemberServiceImpl implements MemberService {
 	            return list;
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	            throw new RuntimeException("Failed to retrieve Zzim list", e);
+	            throw new RuntimeException("찜 리스트 조회 실패", e);
 	        }
 	    }
 
 	@Override
 	public void removeZzim(ZzimApt zzimApt) {
 		zzimAptMapper.removeZzim(zzimApt);
+	}
+
+	@Override
+	public ZzimAptDetail getZzimListDetail(String aptCode) {
+		try {
+            ZzimAptDetail zzimAptDetail = zzimAptMapper.getZzimListDetail(aptCode);
+            return zzimAptDetail;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("찜 리스트 상세 조회 실패", e);
+        }
 	}
 }

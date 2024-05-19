@@ -138,9 +138,9 @@ public class MemberController {
 	
 	//	[GET] 회원 검색
 	// 	ex)
-	//	http://localhost:80/member/searchMember/abcd
-	@GetMapping("/searchMember/{id}")
-	public ResponseEntity<?> searchMember(@PathVariable("id") String id) {
+	//	http://localhost:80/member/searchMember?id=abcd
+	@GetMapping("/searchMember")
+	public ResponseEntity<?> searchMember(@RequestParam("id") String id) {
 		try {
 			Member member = memberService.searchMember(id);
 			return ResponseEntity.accepted().body(member);
@@ -152,9 +152,9 @@ public class MemberController {
 	
 	//	[DELETE] 회원 탈퇴
 	//	ex)
-	//	http://localhost:80/member/deleteMember/abcd
+	//	http://localhost:80/member/deleteMember?id=abcd
 	@DeleteMapping("/deleteMember/{id}")
-	public ResponseEntity<?> deleteMember(@PathVariable("id") String id) {
+	public ResponseEntity<?> deleteMember(@RequestParam("id") String id) {
 		try {
 			int result = memberService.deleteMember(id);
 			if(result != 0) {
@@ -223,7 +223,7 @@ public class MemberController {
 		}
 	}
 	
-	//	[GET] 찜 리스트 조회(id로)
+	//	[GET] 찜 리스트 전체 조회(id로)
 	//	ex)
 	//	http://localhost:80/member/zzimList?userId=abcd
 	@GetMapping("/zzimList")
@@ -238,6 +238,21 @@ public class MemberController {
 		}
 
 	}
+	
+	@GetMapping("/zzimListDetail")
+	public ResponseEntity<?> zzimListDetail(@RequestParam("aptCode") String aptCode) {
+		try {
+			ZzimAptDetail zzimAptDetail = memberService.getZzimListDetail(aptCode);
+				return new ResponseEntity<ZzimAptDetail>(zzimAptDetail, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Error(" + this.getClass().getName() + ") "
+					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
+	
 	
 	//	[DELETE] 찜 삭제(aptCode로)
 	//	ex)

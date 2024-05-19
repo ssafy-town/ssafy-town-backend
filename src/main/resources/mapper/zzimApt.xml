@@ -21,6 +21,20 @@
         order by cnt desc;
     </select>
     
+    	
+ <select id="getZzimListDetail" resultType="com.home.member.model.ZzimAptDetail">
+        select houseinfo.aptCode as aptCode, houseinfo.apartmentName as aptName, houseinfo.dongCode as dongCode, 
+               houseinfo.dong as dongName, houseinfo.buildYear as buildYear, houseinfo.jibun as jibun, 
+               houseinfo.lat as lat, houseinfo.lng as lng, NULL as img, count(a.aptCode) as cnt
+        from houseinfo
+        join zzimApt as a
+        on a.aptCode = houseinfo.aptCode
+        where houseinfo.aptCode = #{aptCode}
+        group by houseinfo.aptCode, houseinfo.apartmentName, houseinfo.dongCode, houseinfo.dong, houseinfo.buildYear,
+                 houseinfo.jibun, houseinfo.lat, houseinfo.lng
+        order by cnt desc;
+    </select>
+    
     <delete id="removeZzim" parameterType="com.home.member.model.ZzimApt">
 		delete from zzimApt where aptCode=#{aptCode} and userId=#{userId}
 	</delete>
