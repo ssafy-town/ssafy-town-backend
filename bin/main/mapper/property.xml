@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace="com.home.house.mapper.PropertyMapper">
+	
+	
+	<select id="getList" resultType="Property">
+		select * 
+		from property
+	</select>
+	
+	
+	<select id="getDetail" parameterType="String" resultType="Property">
+		select * 
+		from property
+		where idx = #{idx}
+	</select>
+	
+	<insert id="add" parameterType="Property">
+		insert into
+	 	property(id, title, date, expireDate, price, managementPrice, managementDesc, roomType, floorNow, floorTotal, roomSize, content, img, keyword, addr, dongType)
+		values (#{id},#{title},now(),#{expireDate}, #{price},#{managementPrice},#{managementDesc},#{roomType},#{floorNow},#{floorTotal},#{roomSize},#{content},#{img},#{keyword},#{addr},#{dongType})
+	</insert>	
+
+	<update id="update" parameterType="Property">
+		update property
+		set title = #{title}, expireDate=#{expireDate}, price=#{price}, managementPrice=#{managementPrice},managementDesc=#{managementDesc},roomType=#{roomType},floorNow=#{floorNow},floorTotal=#{floorTotal},roomSize=#{roomSize},content=#{content},img=#{img},keyword=#{keyword},addr=#{addr},dongType=#{dongType}
+		where idx = #{idx}
+	</update>	
+	
+	<delete id="remove" parameterType="String">
+		delete 
+		from property
+		where idx = #{idx}
+	</delete>
+	
+	
+</mapper>
