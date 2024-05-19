@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.home.house.model.Property;
@@ -27,7 +27,7 @@ public class PropertyController {
 	private PropertyService propertyService;
 
 	// 글목록 가져오기, 페이징
-	@GetMapping
+	@GetMapping("/getListAll")
 	public ResponseEntity<?> getPropertyList() {
 		try {
 			List<Property> properties = propertyService.getList();
@@ -38,8 +38,8 @@ public class PropertyController {
 	}
 
 	// 글 상세 보기  
-	@GetMapping("{idx}")
-	public ResponseEntity<?> getPropertyDetail(@PathVariable("idx") String idx) {
+	@GetMapping("/getDetail")
+	public ResponseEntity<?> getPropertyDetail(@RequestParam("idx") String idx) {
 		try {
 			Property property = propertyService.getDetail(idx);
 			return new ResponseEntity<Property>(property, HttpStatus.OK);
@@ -71,8 +71,8 @@ public class PropertyController {
 	}
 
 	// 글 삭제
-	@DeleteMapping("{idx}")
-	public ResponseEntity<String> removeProperty(@PathVariable("idx") String idx) {
+	@DeleteMapping("/remove")
+	public ResponseEntity<String> removeProperty(@RequestParam("idx") String idx) {
 		try {
 			propertyService.remove(idx);
 			return new ResponseEntity<String>("글 제거 성공", HttpStatus.OK);
