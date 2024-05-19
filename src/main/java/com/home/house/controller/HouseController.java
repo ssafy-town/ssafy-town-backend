@@ -102,7 +102,6 @@ public class HouseController {
 	            findDeal.setYear(year);
 	            findDeal.setMonth(month);
 
-	            System.out.println(sidoName);
 	            return new ResponseEntity<>(houseService.searchBySelectOption(findDeal), HttpStatus.OK);
 	        }
 	    } catch (Exception e) {

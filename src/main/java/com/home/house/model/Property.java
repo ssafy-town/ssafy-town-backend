@@ -7,50 +7,59 @@ public class Property implements Serializable{
 	private String id;
 	private String title;
 	private String date;
-	private String type;
+	private String expireDate;
 	private String price;
 	private String managementPrice;
 	private String managementDesc;
-	private String houseType;
-	private int currentFloor;
-	private int totalFloor;
+	private String roomType;
+	public String getRoomType() {
+		return roomType;
+	}
+
+
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
+	private int floorNow;
+	private int floorTotal;
 	private double roomSize;
 	private String content;
 	private String img;
 	private String keyword;
 	private String addr;
-	private String dong;
-	private String lat;
-	private String lng;
+	private String dongType;
 	
 	public Property() {
 		super();
 	}
 
-	public Property(int idx, String id, String title, String date, String type, String price, String managementPrice,
-			String managementDesc, String houseType, int currentFloor, int totalFloor, double roomSize, String content,
-			String img, String keyword, String addr, String dong, String lat, String lng) {
+	
+	
+	public Property(int idx, String id, String title, String date, String expireDate, String price,
+			String managementPrice, String managementDesc, int floorNow, int floorTotal, double roomSize,
+			String content, String img, String keyword, String addr, String dongType) {
 		super();
 		this.idx = idx;
 		this.id = id;
 		this.title = title;
 		this.date = date;
-		this.type = type;
+		this.expireDate = expireDate;
 		this.price = price;
 		this.managementPrice = managementPrice;
 		this.managementDesc = managementDesc;
-		this.houseType = houseType;
-		this.currentFloor = currentFloor;
-		this.totalFloor = totalFloor;
+		this.floorNow = floorNow;
+		this.floorTotal = floorTotal;
 		this.roomSize = roomSize;
 		this.content = content;
 		this.img = img;
 		this.keyword = keyword;
 		this.addr = addr;
-		this.dong = dong;
-		this.lat = lat;
-		this.lng = lng;
+		this.dongType = dongType;
 	}
+
+
 
 	public int getIdx() {
 		return idx;
@@ -84,12 +93,12 @@ public class Property implements Serializable{
 		this.date = date;
 	}
 
-	public String getType() {
-		return type;
+	public String getExpireDate() {
+		return expireDate;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setExpireDate(String expireDate) {
+		this.expireDate = expireDate;
 	}
 
 	public String getPrice() {
@@ -116,28 +125,20 @@ public class Property implements Serializable{
 		this.managementDesc = managementDesc;
 	}
 
-	public String getHouseType() {
-		return houseType;
+	public int getFloorNow() {
+		return floorNow;
 	}
 
-	public void setHouseType(String houseType) {
-		this.houseType = houseType;
+	public void setFloorNow(int floorNow) {
+		this.floorNow = floorNow;
 	}
 
-	public int getCurrentFloor() {
-		return currentFloor;
+	public int getFloorTotal() {
+		return floorTotal;
 	}
 
-	public void setCurrentFloor(int currentFloor) {
-		this.currentFloor = currentFloor;
-	}
-
-	public int getTotalFloor() {
-		return totalFloor;
-	}
-
-	public void setTotalFloor(int totalFloor) {
-		this.totalFloor = totalFloor;
+	public void setFloorTotal(int floorTotal) {
+		this.floorTotal = floorTotal;
 	}
 
 	public double getRoomSize() {
@@ -180,32 +181,13 @@ public class Property implements Serializable{
 		this.addr = addr;
 	}
 
-	public String getDong() {
-		return dong;
+	public String getDongType() {
+		return dongType;
 	}
 
-	public void setDong(String dong) {
-		this.dong = dong;
+	public void setDongType(String dongType) {
+		this.dongType = dongType;
 	}
-
-	public String getLat() {
-		return lat;
-	}
-
-	public void setLat(String lat) {
-		this.lat = lat;
-	}
-
-	public String getLng() {
-		return lng;
-	}
-
-	public void setLng(String lng) {
-		this.lng = lng;
-	}
-
 	
-
-
 	
 }

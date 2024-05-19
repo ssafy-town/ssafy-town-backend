@@ -6,7 +6,7 @@ import com.home.house.model.Property;
 
 
 public interface PropertyService {
-//	public List<Property> 	getList(PageBean bean);
+	public List<Property> 	getList();
 	public Property 		getDetail(String idx);
 	public void 			add(Property property);
 	public void 			update(Property property);
