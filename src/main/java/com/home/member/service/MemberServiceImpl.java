@@ -71,6 +71,11 @@ public class MemberServiceImpl implements MemberService {
 		zzimAptMapper.addZzim(zzimApt);
 		
 	}
+	
+	   @Override
+	    public int isZzimExists(ZzimApt zzimApt) {
+	        return zzimAptMapper.isZzimExists(zzimApt);
+	    }
 
 	 @Override
 	    public List<ZzimAptDetail> getZzimList(String userId) {
@@ -89,14 +94,10 @@ public class MemberServiceImpl implements MemberService {
 		zzimAptMapper.removeZzim(zzimApt);
 	}
 
+
+
 	@Override
-	public ZzimAptDetail getZzimListDetail(String aptCode) {
-		try {
-            ZzimAptDetail zzimAptDetail = zzimAptMapper.getZzimListDetail(aptCode);
-            return zzimAptDetail;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("찜 리스트 상세 조회 실패", e);
-        }
+	public ZzimAptDetail getZzimListDetail(ZzimApt zzimApt) {
+		 return zzimAptMapper.getZzimListDetail(zzimApt);
 	}
 }

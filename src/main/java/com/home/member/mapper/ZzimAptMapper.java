@@ -10,8 +10,9 @@ import com.home.member.model.ZzimAptDetail;
 
 @Mapper
 public interface ZzimAptMapper {
-	public void addZzim(ZzimApt zzimApt);
-	public List<ZzimAptDetail> getZzimList(String userId);
-	public ZzimAptDetail getZzimListDetail(String aptCode);
-	void removeZzim(ZzimApt zzimApt);
+	   void addZzim(ZzimApt zzimApt);
+	    List<ZzimAptDetail> getZzimList(String userId);
+	    ZzimAptDetail getZzimListDetail(ZzimApt zzimApt);
+	    void removeZzim(ZzimApt zzimApt);
+	    int isZzimExists(ZzimApt zzimApt);
 }

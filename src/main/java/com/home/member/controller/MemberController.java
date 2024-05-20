@@ -2,6 +2,7 @@ package com.home.member.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,92 +29,91 @@ import jakarta.servlet.http.HttpSession;
 @CrossOrigin("*")
 public class MemberController {
 	
-	private final MemberService memberService;
-	
-	public MemberController(MemberService memberService) {
-		this.memberService = memberService;
-	}
+	@Autowired
+	private MemberService memberService;
 	
 	//	[POST] 회원가입
-	//  ex)
-	//	http://localhost:80/member/signUp
-	//	{
-	//	    "id" : "abcd",
-	//	    "pw" : "1234",
-	//	    "name" : "김철수",
-	//	    "addr" : "구미 진평동 사랑채",
-	//	    "tel" : "010-9323-1234"
-	//
-	//	}
+		//  ex)
+		//	http://localhost/member/signUp
+		//  body - raw (json)
+		//	{
+		//	    "id" : "abcd",
+		//	    "pw" : "1234",
+		//	    "name" : "김철수",
+		//	    "addr" : "구미 진평동 사랑채",
+		//	    "tel" : "010-9323-1234"
+		//
+		//	}
 	@PostMapping("/signUp")
 	public ResponseEntity<?> signup(@RequestBody Member member) {
 	    try {
-	        // ID 중복 확인
-	        if (memberService.isMemberExists(member.getId())) {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 존재하는 회원입니다.");
+	        if (memberService.isMemberExists(member.getId())) {	// 회원 중복 확인
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 존재하는 회원");
 	        }
 	        
 	        memberService.signUp(member);
-	        return ResponseEntity.accepted().body("회원 가입에 성공했습니다.");
-	    } catch (Exception e) {
+	        return ResponseEntity.accepted().body("회원 가입 성공");
+	    } catch (Exception e) {	
 	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 가입에 실패했습니다.");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 가입 실패.");
 	    }
 	}
 	
 	//	[POST] 로그인
-	// 	ex)
-	//	http://localhost:80/member/login
-	//	{
-	//	    "id" : "abcd",
-	//	    "pw" : "1234",
-	//	}
+		// 	ex)
+		//	http://localhost/member/login
+		//  body - raw (json)
+		//	{
+		//	    "id" : "abcd",
+		//	    "pw" : "1234",
+		//	}
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Member member, HttpSession session) {
 	    try {
 	        int id = memberService.login(member);
 	        
-	        // 존재하는 회원이라면
-	        if(id > 0) {
+	        
+	        if(id > 0) {	// 존재하는 회원이라면
 	            session.setAttribute("member", member.getId());
 	            return ResponseEntity.accepted().body("로그인 성공");
 	        } else {	// 일치하는 회원이 없는 경우
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호가 일치하지 않습니다.");
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
 	        }
-	    } catch (Exception e) {	// 로그인할 수 없는 경우
+	    } catch (Exception e) {	
 	    	e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 실패");
 	    }
 	}
 	
 	//	[GET] 로그아웃
-	//	ex)
-	//	http://localhost:80/member/logout
+		//	ex)
+		//  현재 저장되어 있는 session을 자동으로 불러와 속성 조회 후 있다면 로그아웃
+		//	http://localhost/member/logout
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 	    try {
-	    	// session에 member가 저장되어 있다면
-	        if(session.getAttribute("member") != null) {
+	        if(session.getAttribute("member") != null) {	// session에 member가 저장되어 있다면
 	            session.removeAttribute("member");
-	            return ResponseEntity.accepted().body("로그아웃되었습니다.");
+	            return ResponseEntity.accepted().body("로그아웃 성공");
 	        } else {	// session에 member가 저장되어 있지 않다면
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 로그아웃된 상태입니다.");
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 로그아웃된 상태");
 	        }
-	    } catch (Exception e) {	// "로그아웃할 수 없는 상태(예외)
+	    } catch (Exception e) {	
 	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그아웃에 실패했습니다.");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그아웃 실패");
 	    }
 	}
 	
 	//  [POST] 비밀번호 찾기
-	//  ex)
-	//	id와 이름, 변경할 pw입력
-	//	http://localhost/member/findPassword
-	//	{
-	//	    "id" : "abcd",
-	//	    "name" : "최유리",
-	//	    "pw" : "5678"
-	//	}
+		//  ex)
+		//	id와 이름, 변경할 pw입력
+		//  body - raw (json)
+		//	http://localhost/member/findPassword
+		//	{
+		//	    "id" : "abcd",
+		//	    "name" : "최유리",
+		//	    "pw" : "5678"
+		//	}
 	@PostMapping("/findPassword")
 	public ResponseEntity<?> findPassword(@RequestBody Member member) {
 	    try {
@@ -125,61 +125,64 @@ public class MemberController {
 	            memberService.updateMember(foundMember);
 	            return ResponseEntity.accepted().body("비밀번호 변경 성공");
 	        } else {	// ID와 이름이 일치하지 않는다면
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보가 일치하지 않습니다.");
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID 또는 이름 불일치");
 	        }
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 변경 실패");
 	    }
 	}
-
-	
-	
 	
 	//	[GET] 회원 검색
-	// 	ex)
-	//	http://localhost:80/member/searchMember?id=abcd
+		// 	RequestParam("id")
+		// 	ex)
+		//	http://localhost/member/searchMember?id=abcd
 	@GetMapping("/searchMember")
 	public ResponseEntity<?> searchMember(@RequestParam("id") String id) {
 		try {
 			Member member = memberService.searchMember(id);
-			return ResponseEntity.accepted().body(member);
+			if(member != null) {
+				return ResponseEntity.accepted().body(member);
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원입니다.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 검색 실패");
 		}
 	}
 	
 	//	[DELETE] 회원 탈퇴
-	//	ex)
-	//	http://localhost:80/member/deleteMember?id=abcd
-	@DeleteMapping("/deleteMember/{id}")
+		// 	RequestParam("id")
+		//	ex)
+		//	http://localhost/member/deleteMember?id=abcd
+	@DeleteMapping("/deleteMember")
 	public ResponseEntity<?> deleteMember(@RequestParam("id") String id) {
 		try {
 			int result = memberService.deleteMember(id);
 			if(result != 0) {
-				return ResponseEntity.accepted().body("회원 삭제에 성공했습니다.");				
+				return ResponseEntity.accepted().body("회원 삭제 성공");				
 			}
 			else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원입니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 삭제에 실패했습니다.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 삭제 실패");
 		}
 	}
 	
 	//	[PUT] 회원 정보 업데이트
-	// 	ex)
-	//	http://localhost:80/member/updateMember
-	//	{
-	//	    "id" : "abcd",
-	//	    "pw" : "1234",
-	//	    "name" : "박미선",
-	//	    "addr" : "대구시 대현동 경북대 기숙사",
-	//	    "tel" : "010-9345-1234"
-	//
-	//	}
+		//  body - raw (json)
+		// 	ex)
+		//	http://localhost/member/updateMember
+		//	{
+		//	    "id" : "abcd",
+		//	    "pw" : "1234",
+		//	    "name" : "박미선",
+		//	    "addr" : "대구시 대현동 경북대 기숙사",
+		//	    "tel" : "010-9345-1234"
+		//	}
 	@PutMapping("/updateMember")
 	public ResponseEntity<?> updateMember(@RequestBody Member member) {
 		try {
@@ -188,89 +191,120 @@ public class MemberController {
 				return ResponseEntity.accepted().body(memberService.searchMember(member.getId()));				
 			}
 			else {
-				 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보가 일치하지 않습니다.");
+				 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 불일치");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 업데이트에 실패했습니다.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 업데이트 실패");
 		}
 	}
 	
 	//	[GET] 회원 리스트 조회
-	//	ex)
-	//	http://localhost:80/member/memberList
+		//	ex)
+		//	http://localhost/member/memberList
 	@GetMapping("/memberList")
 	public ResponseEntity<?> getMemberList() throws Exception { 
 		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
 	}
 	
-//	[POST] 찜하기
-	//	ex)
-	//	http://localhost:80/member/addZzim
-//	{
-//	    "userId" : "qwer",
-//	    "aptCode" : "47111000000006"
-//	}
+	//	[POST] 찜하기
+		//  body - raw (json)
+		//	ex)
+		//	http://localhost/member/addZzim
+		//	{
+		//	    "userId" : "qwer",
+		//	    "aptCode" : "47111000000006"
+		//	}
 	@PostMapping("/addZzim")
-	public ResponseEntity<?> addZzim(@RequestBody ZzimApt zzimApt){
-		try {
-			memberService.addZzim(zzimApt);
-			return ResponseEntity.accepted().body("찜추가에 성공했습니다.");		
-		}catch(Exception e) {
-			System.out.println("Error(" + this.getClass().getName() + ") "
-					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
-			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
-		}
-	}
+	public ResponseEntity<?> addZzim(HttpSession session, @RequestParam("aptCode") String aptCode) {
+        try {
+            ZzimApt zzimApt = new ZzimApt();
+            String userId = (String) session.getAttribute("member");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+            }
+            zzimApt.setUserId(userId);
+            zzimApt.setAptCode(Long.parseLong(aptCode));
+            if (memberService.isZzimExists(zzimApt) > 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 찜 추가한 아파트입니다");
+            }
+            memberService.addZzim(zzimApt);
+            return ResponseEntity.accepted().body("찜추가 성공");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜 추가 실패");
+        }
+    }
 	
-	//	[GET] 찜 리스트 전체 조회(id로)
-	//	ex)
-	//	http://localhost:80/member/zzimList?userId=abcd
+	//	[GET] 찜 리스트 전체 조회(session)
+		//	ex)
+		//	http://localhost/member/zzimList
 	@GetMapping("/zzimList")
-	public ResponseEntity<?> zzimList(@RequestParam("userId") String userId) {
-		try {
-			List<ZzimAptDetail> list = memberService.getZzimList(userId);
-				return new ResponseEntity<List<ZzimAptDetail>>(list, HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println("Error(" + this.getClass().getName() + ") "
-					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
-			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
-		}
+	 public ResponseEntity<?> zzimList(HttpSession session) {
+        try {
+            String userId = (String) session.getAttribute("member");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+            }
+            List<ZzimAptDetail> list = memberService.getZzimList(userId);
+            if (list.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 아파트가 없습니다");
+            }
+            return new ResponseEntity<List<ZzimAptDetail>>(list, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜 리스트 전체 조회 실패");
+        }
+    }
 
-	}
 	
+	//	[GET] 찜 리스트 상세 조회(aptCode로)
+		//  RequestParam("aptCode")
+		//	ex)
+		//	http://localhost/member/zzimList?aptCode=47111000000002
 	@GetMapping("/zzimListDetail")
-	public ResponseEntity<?> zzimListDetail(@RequestParam("aptCode") String aptCode) {
-		try {
-			ZzimAptDetail zzimAptDetail = memberService.getZzimListDetail(aptCode);
-				return new ResponseEntity<ZzimAptDetail>(zzimAptDetail, HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println("Error(" + this.getClass().getName() + ") "
-					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
-			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
-		}
-
-	}
+	public ResponseEntity<?> zzimListDetail(@RequestParam("aptCode") String aptCode, HttpSession session) {
+        try {
+            String userId = (String) session.getAttribute("member");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+            }
+            ZzimApt zzimApt = new ZzimApt(userId, Long.parseLong(aptCode));
+            ZzimAptDetail zzimAptDetail = memberService.getZzimListDetail(zzimApt);
+            if (zzimAptDetail == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 데이터가 아닙니다");
+            }
+            return new ResponseEntity<ZzimAptDetail>(zzimAptDetail, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜 리스트 상세 조회 실패");
+        }
+    }
 	
 	
 	
 	//	[DELETE] 찜 삭제(aptCode로)
-	//	ex)
-	//	http://localhost/member/removeZzim?aptCode=47111000000002
+		//	RequestParam("aptCode")
+		//	ex)
+		//	http://localhost/member/removeZzim?aptCode=47111000000002
 	@DeleteMapping("/removeZzim")
-	public ResponseEntity<?> removeZzim(@RequestParam("aptCode") String aptCode, HttpServletRequest request) {
+	 public ResponseEntity<?> removeZzim(@RequestParam("aptCode") String aptCode, HttpSession session) {
 		try {
-			HttpSession session = request.getSession();
-			String id = (String)session.getAttribute("member");
-			ZzimApt zzimApt = new ZzimApt(id , Long.parseLong(aptCode));
-			memberService.removeZzim(zzimApt);
-			return ResponseEntity.accepted().body("찜삭제에 성공했습니다.");		
-		} catch (Exception e) {
-			System.out.println("Error(" + this.getClass().getName() + ") "
-					+ "("+Thread.currentThread().getStackTrace()[1].getMethodName() + "):" + e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜삭제에 실패했습니다.");
-		}
-
-	}
+            String userId = (String) session.getAttribute("member");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+            }
+            ZzimApt zzimApt = new ZzimApt(userId, Long.parseLong(aptCode));
+            int zzimExists = memberService.isZzimExists(zzimApt);
+            if (zzimExists == 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 데이터가 아닙니다");
+            }
+            memberService.removeZzim(zzimApt);
+            return ResponseEntity.accepted().body("찜삭제 성공");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜삭제 실패");
+        }
+    }
 	
 }
