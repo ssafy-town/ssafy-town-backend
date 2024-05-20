@@ -55,6 +55,7 @@ public class PropertyController {
 			propertyService.add(property);
 			return new ResponseEntity<String>("글 등록 성공", HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>("글 등록 실패", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,6 @@ import com.home.member.model.ZzimApt;
 import com.home.member.model.ZzimAptDetail;
 import com.home.member.service.MemberService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -75,7 +73,9 @@ public class MemberController {
 	        
 	        if(id > 0) {	// 존재하는 회원이라면
 	            session.setAttribute("member", member.getId());
-	            return ResponseEntity.accepted().body("로그인 성공");
+	            String responseMessage = member.getId() + "님 로그인 성공";
+	            
+	            return ResponseEntity.accepted().body(responseMessage);
 	        } else {	// 일치하는 회원이 없는 경우
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
 	        }
@@ -93,16 +93,35 @@ public class MemberController {
 	public ResponseEntity<?> logout(HttpSession session) {
 	    try {
 	        if(session.getAttribute("member") != null) {	// session에 member가 저장되어 있다면
-	            session.removeAttribute("member");
-	            return ResponseEntity.accepted().body("로그아웃 성공");
+	        	String responseMessage = session.getAttribute("member") + "님 로그인 성공";
+	        	session.removeAttribute("member");
+	            return ResponseEntity.accepted().body(responseMessage);
 	        } else {	// session에 member가 저장되어 있지 않다면
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 로그아웃된 상태");
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 필요");
 	        }
 	    } catch (Exception e) {	
 	        e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그아웃 실패");
 	    }
 	}
+	
+	@GetMapping("/checkLogin")
+	public ResponseEntity<?> checkLogin(HttpSession session) {
+	    try {
+	        if(session.getAttribute("member") != null) {	// session에 member가 저장되어 있다면
+	        	String responseMessage = session.getAttribute("member") + "님 로그인 성공";
+	        	session.removeAttribute("member");
+	            return ResponseEntity.accepted().body(responseMessage);
+	        } else {	// session에 member가 저장되어 있지 않다면
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 필요");
+	        }
+	    } catch (Exception e) {	
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그아웃 실패");
+	    }
+	}
+	
+	
 	
 	//  [POST] 비밀번호 찾기
 		//  ex)
@@ -157,14 +176,19 @@ public class MemberController {
 		//	ex)
 		//	http://localhost/member/deleteMember?id=abcd
 	@DeleteMapping("/deleteMember")
-	public ResponseEntity<?> deleteMember(@RequestParam("id") String id) {
+	public ResponseEntity<?> deleteMember(HttpSession session) {
 		try {
-			int result = memberService.deleteMember(id);
+			 String userId = (String) session.getAttribute("member");
+	         if (userId == null) {
+	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+	         }
+			
+			int result = memberService.deleteMember(userId);
 			if(result != 0) {
 				return ResponseEntity.accepted().body("회원 삭제 성공");				
 			}
 			else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않음.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,8 +208,13 @@ public class MemberController {
 		//	    "tel" : "010-9345-1234"
 		//	}
 	@PutMapping("/updateMember")
-	public ResponseEntity<?> updateMember(@RequestBody Member member) {
+	public ResponseEntity<?> updateMember(@RequestBody Member member, HttpSession session) {
 		try {
+			 String userId = (String) session.getAttribute("member");
+	         if (userId == null) {
+	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+	         }
+	         
 			int result = memberService.updateMember(member);
 			if(result !=0) {
 				return ResponseEntity.accepted().body(memberService.searchMember(member.getId()));				
@@ -223,11 +252,13 @@ public class MemberController {
             if (userId == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
             }
+            
             zzimApt.setUserId(userId);
             zzimApt.setAptCode(Long.parseLong(aptCode));
             if (memberService.isZzimExists(zzimApt) > 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 찜 추가한 아파트입니다");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 찜 추가한 아파트");
             }
+            
             memberService.addZzim(zzimApt);
             return ResponseEntity.accepted().body("찜추가 성공");
         } catch (Exception e) {
@@ -244,11 +275,12 @@ public class MemberController {
         try {
             String userId = (String) session.getAttribute("member");
             if (userId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
             }
+            
             List<ZzimAptDetail> list = memberService.getZzimList(userId);
             if (list.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 아파트가 없습니다");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 아파트 없음");
             }
             return new ResponseEntity<List<ZzimAptDetail>>(list, HttpStatus.OK);
         } catch (Exception e) {
@@ -267,12 +299,13 @@ public class MemberController {
         try {
             String userId = (String) session.getAttribute("member");
             if (userId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
             }
+            
             ZzimApt zzimApt = new ZzimApt(userId, Long.parseLong(aptCode));
             ZzimAptDetail zzimAptDetail = memberService.getZzimListDetail(zzimApt);
             if (zzimAptDetail == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 데이터가 아닙니다");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 데이터가 아님");
             }
             return new ResponseEntity<ZzimAptDetail>(zzimAptDetail, HttpStatus.OK);
         } catch (Exception e) {
@@ -292,13 +325,15 @@ public class MemberController {
 		try {
             String userId = (String) session.getAttribute("member");
             if (userId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
             }
+            
             ZzimApt zzimApt = new ZzimApt(userId, Long.parseLong(aptCode));
             int zzimExists = memberService.isZzimExists(zzimApt);
             if (zzimExists == 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 데이터가 아닙니다");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 데이터 아님");
             }
+            
             memberService.removeZzim(zzimApt);
             return ResponseEntity.accepted().body("찜삭제 성공");
         } catch (Exception e) {
