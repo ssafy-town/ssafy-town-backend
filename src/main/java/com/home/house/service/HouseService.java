@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.home.house.model.FindDeal;
 import com.home.house.model.HouseInfo;
+import com.home.house.model.HouseStats;
 
 public interface HouseService {
 	List<HouseInfo> searchByDong(String dongName);
@@ -16,4 +17,9 @@ public interface HouseService {
 	List<String> getMonthList();
 	List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
 	List<HouseInfo> searchBySelectOption(FindDeal findDeal);
+	
+	HouseStats searchBySelectOptionWithStats(Map<String, String> params);
+	HouseStats searchByDongWithStats(String dongName);
+	HouseStats searchByKeywordWithStats(String keyword);
+	
 }

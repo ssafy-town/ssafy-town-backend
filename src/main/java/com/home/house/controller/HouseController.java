@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.home.house.model.FindDeal;
 import com.home.house.model.HouseInfo;
+import com.home.house.model.HouseStats;
 import com.home.house.service.HouseService;
 
 @RestController
@@ -25,6 +26,39 @@ public class HouseController {
 	
 	@Autowired
 	private HouseService houseService;
+	
+	 // 실거래가 검색 - 동이름
+    @GetMapping("/searchByDongWithStats")
+    public ResponseEntity<?> searchByDongWithStats(@RequestParam("dongName") String dongName) throws Exception {
+        return new ResponseEntity<>(houseService.searchByDongWithStats(dongName), HttpStatus.OK);
+    }
+
+    // 실거래가 검색 - 키워드
+    @GetMapping("/searchByKeywordWithStats")
+    public ResponseEntity<?> searchByKeywordWithStats(@RequestParam("keyword") String keyword) throws Exception {
+        return new ResponseEntity<>(houseService.searchByKeywordWithStats(keyword), HttpStatus.OK);
+    }
+
+    // 실거래가 가져오기 - 시도, 구군, 동 (+년, 월 선택)
+    @GetMapping("/searchBySelectOptionWithStats")
+    public ResponseEntity<?> searchBySelectOptionWithStats(
+            @RequestParam("sidoName") String sidoName,
+            @RequestParam("gugunName") String gugunName,
+            @RequestParam("dongName") String dongName,
+            @RequestParam(value = "year", required = false) String year,
+            @RequestParam(value = "month", required = false) String month)
+            throws Exception {
+        Map<String, String> params = new HashMap<>();
+        params.put("sidoName", sidoName);
+        params.put("gugunName", gugunName);
+        params.put("dongName", dongName);
+        if (year != null) params.put("year", year);
+        if (month != null) params.put("month", month);
+
+        return new ResponseEntity<>(houseService.searchBySelectOptionWithStats(params), HttpStatus.OK);
+    }
+
+	
 	
 	// 실거래가 검색 - 동이름
 	// http://localhost/house/searchByDong/동홍동
