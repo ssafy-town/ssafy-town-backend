@@ -2,10 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-	
 <mapper namespace="com.home.house.mapper.PropertyMapper">
-	
-	
+
 	<select id="getList" resultType="Property">
 		select * 
 		from property
@@ -19,8 +17,7 @@
 	</select>
 	
 	<insert id="add" parameterType="Property">
-		insert into
-	 	property(id, title, date, expireDate, price, managementPrice, managementDesc, roomType, floorNow, floorTotal, roomSize, content, img, keyword, addr, dongType)
+		insert into property (id, title, date, expireDate, price, managementPrice, managementDesc, roomType, floorNow, floorTotal, roomSize, content, img, keyword, addr, dongType)
 		values (#{id},#{title},now(),#{expireDate}, #{price},#{managementPrice},#{managementDesc},#{roomType},#{floorNow},#{floorTotal},#{roomSize},#{content},#{img},#{keyword},#{addr},#{dongType})
 	</insert>	
 
@@ -35,6 +32,5 @@
 		from property
 		where idx = #{idx}
 	</delete>
-	
 	
 </mapper>

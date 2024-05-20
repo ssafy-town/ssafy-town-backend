@@ -6,9 +6,7 @@ import com.home.member.model.Member;
 import com.home.member.model.ZzimApt;
 import com.home.member.model.ZzimAptDetail;
 
-
 public interface MemberService {
-	
 	public void signUp(Member member);
 	public boolean isMemberExists(String id);
 	public int login(Member member);

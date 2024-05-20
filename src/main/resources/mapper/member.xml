@@ -10,7 +10,7 @@
 	</insert>
 	
 	<select id="isMemberExists" parameterType="string" resultType="boolean">
-    select count(id) > 0 from member where id = #{id}
+    	select count(id) > 0 from member where id = #{id}
 	</select>
 	
 	<select id="login" parameterType="member" resultType="int">
@@ -36,7 +36,5 @@
 	<select id="getMemberList" parameterType="string" resultType="member">
 		select * from member
 	</select>
-	
-	
 	
 </mapper>

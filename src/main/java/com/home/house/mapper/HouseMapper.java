@@ -19,5 +19,4 @@ public interface HouseMapper {
 	List<String> getMonthList();
 	List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
 	List<HouseInfo> searchBySelectOption(FindDeal findDeal);
-	
 }

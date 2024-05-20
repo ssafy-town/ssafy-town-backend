@@ -12,16 +12,6 @@ public class Property implements Serializable{
 	private String managementPrice;
 	private String managementDesc;
 	private String roomType;
-	public String getRoomType() {
-		return roomType;
-	}
-
-
-
-	public void setRoomType(String roomType) {
-		this.roomType = roomType;
-	}
-
 	private int floorNow;
 	private int floorTotal;
 	private double roomSize;
@@ -35,8 +25,6 @@ public class Property implements Serializable{
 		super();
 	}
 
-	
-	
 	public Property(int idx, String id, String title, String date, String expireDate, String price,
 			String managementPrice, String managementDesc, int floorNow, int floorTotal, double roomSize,
 			String content, String img, String keyword, String addr, String dongType) {
@@ -125,6 +113,14 @@ public class Property implements Serializable{
 		this.managementDesc = managementDesc;
 	}
 
+	public String getRoomType() {
+		return roomType;
+	}
+	
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+	
 	public int getFloorNow() {
 		return floorNow;
 	}

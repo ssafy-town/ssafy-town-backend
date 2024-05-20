@@ -69,32 +69,29 @@ public class MemberServiceImpl implements MemberService {
 			System.out.println("없는 회원. 예외처리 해야함.");
 		}
 		zzimAptMapper.addZzim(zzimApt);
-		
 	}
 	
-	   @Override
-	    public int isZzimExists(ZzimApt zzimApt) {
-	        return zzimAptMapper.isZzimExists(zzimApt);
-	    }
+	@Override
+	public int isZzimExists(ZzimApt zzimApt) {
+	    return zzimAptMapper.isZzimExists(zzimApt);
+	}
 
-	 @Override
-	    public List<ZzimAptDetail> getZzimList(String userId) {
-	        try {
-	            List<ZzimAptDetail> list = zzimAptMapper.getZzimList(userId);
+	@Override
+	public List<ZzimAptDetail> getZzimList(String userId) {
+	    try {
+	         	List<ZzimAptDetail> list = zzimAptMapper.getZzimList(userId);
 	            Collections.sort(list, (a, b) -> b.getCnt() - a.getCnt());
 	            return list;
-	        } catch (Exception e) {
+	    } catch (Exception e) {
 	            e.printStackTrace();
 	            throw new RuntimeException("찜 리스트 조회 실패", e);
-	        }
-	    }
+	       		}
+	}
 
 	@Override
 	public void removeZzim(ZzimApt zzimApt) {
 		zzimAptMapper.removeZzim(zzimApt);
 	}
-
-
 
 	@Override
 	public ZzimAptDetail getZzimListDetail(ZzimApt zzimApt) {

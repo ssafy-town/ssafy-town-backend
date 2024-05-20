@@ -8,7 +8,6 @@ import com.home.member.model.Member;
 
 @Mapper
 public interface MemberMapper {
-	
 	public void signUp(Member member);
 	public boolean isMemberExists(String id);
 	public int login(Member member);

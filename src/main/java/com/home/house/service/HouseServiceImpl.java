@@ -3,6 +3,7 @@ package com.home.house.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.home.house.mapper.HouseMapper;
@@ -12,12 +13,8 @@ import com.home.house.model.HouseInfo;
 @Service
 public class HouseServiceImpl implements HouseService{
 	
-	private final HouseMapper houseMapper;
-	
-	public HouseServiceImpl(HouseMapper houseMapper) {
-		this.houseMapper = houseMapper;
-	}
-	
+	@Autowired
+	private HouseMapper houseMapper;
 
 	@Override
 	public List<HouseInfo> searchByDong(String dongName) {

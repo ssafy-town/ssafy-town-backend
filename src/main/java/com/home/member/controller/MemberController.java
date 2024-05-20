@@ -70,11 +70,9 @@ public class MemberController {
 	    try {
 	        int id = memberService.login(member);
 	        
-	        
 	        if(id > 0) {	// 존재하는 회원이라면
 	            session.setAttribute("member", member.getId());
 	            String responseMessage = member.getId() + "님 로그인 성공";
-	            
 	            return ResponseEntity.accepted().body(responseMessage);
 	        } else {	// 일치하는 회원이 없는 경우
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");

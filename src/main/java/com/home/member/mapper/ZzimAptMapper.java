@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import com.home.member.model.ZzimApt;
 import com.home.member.model.ZzimAptDetail;
 
-
 @Mapper
 public interface ZzimAptMapper {
 	   void addZzim(ZzimApt zzimApt);
