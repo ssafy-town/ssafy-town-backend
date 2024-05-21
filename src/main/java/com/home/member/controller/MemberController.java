@@ -71,13 +71,14 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(HttpSession session, @RequestBody Member member) {
 	    try {
-	        Member validMember = memberService.login(member);
+	        Member validMember = memberService.searchMember(member.getId());
 	        
 	        if(validMember != null) {	// 존재하는 회원이라면
 	            session.setAttribute("member", member.getId());
 	            
 	            FindMember findMember = new FindMember();
 	            findMember.setId(validMember.getId());
+	            findMember.setName(validMember.getName());
 	            findMember.setAddr(validMember.getAddr());
 	            findMember.setTel(validMember.getTel());
 	            findMember.setRegions(validMember.getRegions());
@@ -100,7 +101,7 @@ public class MemberController {
 	public ResponseEntity<?> logout(HttpSession session) {
 	    try {
 	        if(session.getAttribute("member") != null) {	// session에 member가 저장되어 있다면
-	        	String responseMessage = session.getAttribute("member") + "님 로그인 성공";
+	        	String responseMessage = session.getAttribute("member") + "님 로그아웃";
 	        	session.removeAttribute("member");
 	        	
 	            return ResponseEntity.accepted().body(responseMessage);
@@ -201,39 +202,43 @@ public class MemberController {
 	//	}
 	@PutMapping("/updateMember")
 	public ResponseEntity<?> updateMember(HttpSession session, @RequestBody Member member) {
-		try {
-			String userId = (String) session.getAttribute("member");
+	    try {
+	        String userId = (String) session.getAttribute("member");
 	        if (userId == null) {
-	        	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
 	        }
 	        
 	        Member findMember = memberService.searchMember(userId);
-	     
-	        if(member.getAddr() == null) {
-	        	member.setAddr(findMember.getAddr());
+	        if (findMember == null) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 존재하지 않음");
 	        }
-	        if(member.getTel() == null) {
-	        	member.setTel(findMember.getTel());
+
+	        findMember.setId(userId);
+	        
+	        if (member.getAddr() != null) {
+	            findMember.setAddr(member.getAddr());
 	        }
-	        if(member.getRegions() == null) {
-	        	member.setRegions(findMember.getRegions());
+	        if (member.getTel() != null) {
+	            findMember.setTel(member.getTel());
 	        }
-	        if(member.getImg() == null) {
-	        	member.setImg(findMember.getImg());
+	        if (member.getRegions() != null) {
+	            findMember.setRegions(member.getRegions());
 	        }
-	         
-			int result = memberService.updateMember(member);
-			if(result !=0) {
-				return ResponseEntity.accepted().body(memberService.searchMember(member.getId()));				
-			}
-			else {
-				 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 불일치");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 업데이트 실패");
-		}
-	}	
+	        if (member.getImg() != null) {
+	            findMember.setImg(member.getImg());
+	        }
+	        
+	        int result = memberService.updateMember(findMember);
+	        if (result != 0) {
+	            return ResponseEntity.accepted().body(memberService.searchMember(findMember.getId()));
+	        } else {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 업데이트 실패");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 정보 업데이트 중 오류 발생");
+	    }
+	}
 	
 	// 회원 탈퇴
 	// [DELETE] Session(id)
