@@ -215,6 +215,14 @@ public class MemberController {
 	         if (userId == null) {
 	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
 	         }
+	        
+	         Member findMember = memberService.searchMember(userId);
+	         
+	         
+	        if(member.getRegions() == null) {
+	        	member.setRegions(findMember.getRegions());
+	        }
+	         
 	         
 			int result = memberService.updateMember(member);
 			if(result !=0) {
