@@ -9,6 +9,19 @@
 		values (#{aptCode},#{userId})
 	</insert>
 	
+	 <select id="getZzimListAllWithCnt" parameterType="String" resultType="com.home.member.model.ZzimAptDetail">
+        select houseinfo.aptCode as aptCode, houseinfo.apartmentName as aptName, houseinfo.dongCode as dongCode, 
+               houseinfo.dong as dongName, houseinfo.buildYear as buildYear, houseinfo.jibun as jibun, 
+               houseinfo.lat as lat, houseinfo.lng as lng, NULL as img, count(a.aptCode) as cnt
+        from houseinfo
+        join zzimApt as a
+        on a.aptCode = houseinfo.aptCode
+        group by houseinfo.aptCode, houseinfo.apartmentName, houseinfo.dongCode, houseinfo.dong, houseinfo.buildYear,
+                 houseinfo.jibun, houseinfo.lat, houseinfo.lng
+        order by cnt desc
+        limit 5;
+    </select>
+	
  	<select id="getZzimList" parameterType="String" resultType="com.home.member.model.ZzimAptDetail">
         select houseinfo.aptCode as aptCode, houseinfo.apartmentName as aptName, houseinfo.dongCode as dongCode, 
                houseinfo.dong as dongName, houseinfo.buildYear as buildYear, houseinfo.jibun as jibun, 
@@ -38,6 +51,10 @@
     
     <delete id="removeZzim" parameterType="com.home.member.model.ZzimApt">
 		delete from zzimApt where aptCode=#{aptCode} and userId=#{userId}
+	</delete>
+	
+	<delete id="removeZzimAll">
+		delete from zzimApt
 	</delete>
 	
 	 <select id="isZzimExists" resultType="int">

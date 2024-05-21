@@ -78,6 +78,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public List<ZzimAptDetail> getZzimListAllWithCnt() {
+		List<ZzimAptDetail> list = zzimAptMapper.getZzimListAllWithCnt();
+		return list;
+	}
+
+	
+	@Override
 	public List<ZzimAptDetail> getZzimList(String userId) {
 	    try {
 	         	List<ZzimAptDetail> list = zzimAptMapper.getZzimList(userId);
@@ -93,11 +100,17 @@ public class MemberServiceImpl implements MemberService {
 	public void removeZzim(ZzimApt zzimApt) {
 		zzimAptMapper.removeZzim(zzimApt);
 	}
+	
+	@Override
+	public void removeZzimAll() {
+		zzimAptMapper.removeZzimAll();
+	}
 
 	@Override
 	public ZzimAptDetail getZzimListDetail(ZzimApt zzimApt) {
 		 return zzimAptMapper.getZzimListDetail(zzimApt);
 	}
+
 
 
 }

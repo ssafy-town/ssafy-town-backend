@@ -269,9 +269,26 @@ public class MemberController {
     }
 	
 	//	[GET] 찜 리스트 전체 조회(session)
+	//	ex)
+	//	http://localhost/member/zzimList
+	@GetMapping("/zzimListAllWithCnt")
+ public ResponseEntity<?> zzimListAllWithCnt(HttpSession session) {
+    try {
+        List<ZzimAptDetail> list = memberService.getZzimListAllWithCnt();
+        if (list.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜한 아파트 없음");
+        }
+        return new ResponseEntity<List<ZzimAptDetail>>(list, HttpStatus.OK);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("찜 리스트 전체 조회 실패");
+    }
+}
+	
+	//	[GET] 나의 찜 리스트 전체 조회(session)
 		//	ex)
 		//	http://localhost/member/zzimList
-	@GetMapping("/zzimList")
+	@GetMapping("/myZzimList")
 	 public ResponseEntity<?> zzimList(HttpSession session) {
         try {
             String userId = (String) session.getAttribute("member");
@@ -295,7 +312,7 @@ public class MemberController {
 		//  RequestParam("aptCode")
 		//	ex)
 		//	http://localhost/member/zzimList?aptCode=47111000000002
-	@GetMapping("/zzimListDetail")
+	@GetMapping("/myZzimListDetail")
 	public ResponseEntity<?> zzimListDetail(@RequestParam("aptCode") String aptCode, HttpSession session) {
         try {
             String userId = (String) session.getAttribute("member");
@@ -343,4 +360,18 @@ public class MemberController {
         }
     }
 	
+	@DeleteMapping("/removeZzimAll")
+	 public ResponseEntity<?> removeZzimAll() {
+		try {
+			memberService.removeZzimAll();		
+			return ResponseEntity.accepted().body("전체 찜삭제 성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("전체 찜 삭제 실패");
+		}
+       } 
+ 
+
 }
+	
+

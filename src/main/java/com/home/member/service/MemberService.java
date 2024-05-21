@@ -17,7 +17,9 @@ public interface MemberService {
 	List<Member> getMemberList();
 	public void addZzim(ZzimApt zzimApt);
 	public int isZzimExists(ZzimApt zzimApt);
+	public List<ZzimAptDetail> getZzimListAllWithCnt();
 	public List<ZzimAptDetail> getZzimList(String userId);
 	public ZzimAptDetail getZzimListDetail(ZzimApt zzimApt);
 	void removeZzim(ZzimApt zzimApt);
+	void removeZzimAll();
 }
