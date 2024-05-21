@@ -9,14 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.home.house.model.FindDeal;
 import com.home.house.model.HouseInfo;
-import com.home.house.model.HouseStats;
 import com.home.house.service.HouseService;
 
 @RestController
@@ -27,7 +25,7 @@ public class HouseController {
 	@Autowired
 	private HouseService houseService;
 	
-	 // 실거래가 검색 - 동이름
+	// 실거래가 검색 - 동이름
     @GetMapping("/searchByDongWithStats")
     public ResponseEntity<?> searchByDongWithStats(@RequestParam("dongName") String dongName) throws Exception {
         return new ResponseEntity<>(houseService.searchByDongWithStats(dongName), HttpStatus.OK);

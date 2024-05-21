@@ -19,6 +19,11 @@ public class PropertyServiceImpl implements PropertyService{
 	public List<Property> getList() {
 		return propertyMapper.getList();
 	}
+	
+	@Override
+	public List<Property> getMyList(String userId) {
+		return propertyMapper.getMyList(userId);
+	}
 
 	@Override
 	public Property getDetail(String idx) {
@@ -36,9 +41,18 @@ public class PropertyServiceImpl implements PropertyService{
 	}
 
 	@Override
+	public int isPropertyExists(String idx) {
+		return propertyMapper.isPropertyExists(idx);
+	}
+
+	
+	@Override
 	@Transactional
 	public void remove(String idx) {
 		propertyMapper.remove(idx);
 	}
+
+
+
 
 }

@@ -9,6 +9,12 @@
 		from property
 	</select>
 	
+	<select id="getMyList" parameterType="String" resultType="Property">
+		select * 
+		from property
+		where id=#{userId}
+	</select>
+	
 	
 	<select id="getDetail" parameterType="String" resultType="Property">
 		select * 
@@ -26,6 +32,10 @@
 		set title = #{title}, expireDate=#{expireDate}, price=#{price}, managementPrice=#{managementPrice},managementDesc=#{managementDesc},roomType=#{roomType},floorNow=#{floorNow},floorTotal=#{floorTotal},roomSize=#{roomSize},content=#{content},img=#{img},keyword=#{keyword},addr=#{addr},dongType=#{dongType}
 		where idx = #{idx}
 	</update>	
+	
+	<select id="isPropertyExists" parameterType="string" resultType="int">
+    	select count(idx) from property where idx = #{idx}
+	</select>
 	
 	<delete id="remove" parameterType="String">
 		delete 

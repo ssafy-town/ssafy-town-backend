@@ -107,7 +107,8 @@ public class NewsController {
         return input.replace("&quot;", "\"");
     }
     
-    private static String[] parsePubDate(String pubDateStr) {
+    @SuppressWarnings("deprecation")
+	private static String[] parsePubDate(String pubDateStr) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
             Date date = sdf.parse(pubDateStr);
