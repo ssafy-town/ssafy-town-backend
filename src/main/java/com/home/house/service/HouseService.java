@@ -9,20 +9,22 @@ import com.home.house.model.HouseInfo;
 import com.home.house.model.HouseStats;
 
 public interface HouseService {
-	List<HouseInfo> searchByDong(String dongName);
+	HouseStats searchBySelectOptionWithStats(Map<String, String> params);
+	List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
+	List<HouseInfo> searchBySelectOption(FindDeal findDeal);
+	
+	HouseStats searchByKeywordWithStats(String keyword);
 	List<HouseInfo> searchByKeyword(String keyword);
+	
+	HouseDetailStats searchByDetail(String aptCode);
+	
 	List<String> getSidoList();
 	List<String> getGugunList(String sidoName);
 	List<String> getDongList(String gugunName);
 	List<String> getYearList();
 	List<String> getMonthList();
-	List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
-	List<HouseInfo> searchBySelectOption(FindDeal findDeal);
-	List<HouseInfo> searchByAptCode(String aptCode);
+
 	
-	HouseStats searchBySelectOptionWithStats(Map<String, String> params);
-	HouseStats searchByDongWithStats(String dongName);
-	HouseStats searchByKeywordWithStats(String keyword);
-	HouseDetailStats searchByDetail(String aptCode);
+	
 	
 }

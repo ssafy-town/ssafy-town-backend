@@ -9,7 +9,13 @@
 		values (#{aptCode},#{userId})
 	</insert>
 	
-	 <select id="getZzimListAllWithCnt" parameterType="String" resultType="com.home.member.model.ZzimAptDetail">
+	<select id="isZzimExists" resultType="int">
+        SELECT COUNT(*) 
+        FROM ZzimApt 
+        WHERE userId = #{userId} AND aptCode = #{aptCode}
+    </select>
+	
+	<select id="getZzimListAllWithCnt" parameterType="String" resultType="com.home.member.model.ZzimAptDetail">
         select houseinfo.aptCode as aptCode, houseinfo.apartmentName as aptName, houseinfo.dongCode as dongCode, 
                houseinfo.dong as dongName, houseinfo.buildYear as buildYear, houseinfo.jibun as jibun, 
                houseinfo.lat as lat, houseinfo.lng as lng, NULL as img, count(a.aptCode) as cnt
@@ -35,7 +41,6 @@
         order by cnt desc;
     </select>
     
-    	
 	<select id="getZzimListDetail"  parameterType="com.home.member.model.ZzimApt" resultType="com.home.member.model.ZzimAptDetail">
 		select houseinfo.aptCode as aptCode, houseinfo.apartmentName as aptName, houseinfo.dongCode as dongCode,
 		       houseinfo.dong as dongName, houseinfo.buildYear as buildYear, houseinfo.jibun as jibun,
@@ -50,16 +55,14 @@
 	</select>
     
     <delete id="removeZzim" parameterType="com.home.member.model.ZzimApt">
-		delete from zzimApt where aptCode=#{aptCode} and userId=#{userId}
+		delete 
+		from zzimApt 
+		where aptCode=#{aptCode} and userId=#{userId}
 	</delete>
 	
 	<delete id="removeZzimAll">
-		delete from zzimApt
+		delete 
+		from zzimApt
 	</delete>
-	
-	 <select id="isZzimExists" resultType="int">
-	 
-        SELECT COUNT(*) FROM ZzimApt WHERE userId = #{userId} AND aptCode = #{aptCode}
-    </select>
 
 </mapper>

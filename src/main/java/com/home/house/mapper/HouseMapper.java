@@ -13,25 +13,23 @@ import com.home.house.model.AreaDistribution;
 
 @Mapper
 public interface HouseMapper {
-    List<HouseInfo> searchByDong(String dongName);
-    List<HouseInfo> searchByKeyword(String keyword);
-    List<String> getSidoList();
+    List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
+    List<HouseInfo> searchBySelectOption(FindDeal findDeal);
+    List<YearlyDealStats> getDealStatsByYear(Map<String, String> params);
+    AreaDistribution getAreaDistribution(Map<String, String> params);
+    
+	List<HouseInfo> searchByKeyword(String keyword);
+    List<YearlyDealStats> getDealStatsByYearByKeyword(String keyword);
+    AreaDistribution getAreaDistributionByKeyword(String keyword);
+    
+	List<HouseInfo> searchByAptCode(String aptCode);
+	List<YearlyDealStats> getDealStatsByYearByAptCode(String aptCode);
+	List<FloorDealStats> getDealStatsByFloorByAptCode(String aptCode);
+	
+	List<String> getSidoList();
     List<String> getGugunList(String sidoName);
     List<String> getDongList(String gugunName);
     List<String> getYearList();
     List<String> getMonthList();
-    List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
-    List<HouseInfo> searchBySelectOption(FindDeal findDeal);
-    List<HouseInfo> searchByAptCode(String aptCode);
-
-    // New methods for statistics
-    List<YearlyDealStats> getDealStatsByYear(Map<String, String> params);
-    AreaDistribution getAreaDistribution(Map<String, String> params);
-    List<YearlyDealStats> getDealStatsByYearByDong(String dongName);
-    AreaDistribution getAreaDistributionByDong(String dongName);
-    List<YearlyDealStats> getDealStatsByYearByKeyword(String keyword);
-    AreaDistribution getAreaDistributionByKeyword(String keyword);
-    List<YearlyDealStats> getDealStatsByYearByAptCode(String aptCode);
-    List<FloorDealStats> getDealStatsByFloorByAptCode(String aptCode);
     
 }

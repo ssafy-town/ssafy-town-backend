@@ -27,16 +27,13 @@ public class ZzimAptDetail {
 		this.cnt = cnt;
 	}
 	
-	
 	public String getDongName() {
 		return dongName;
 	}
 
-
 	public void setDongName(String dongName) {
 		this.dongName = dongName;
 	}
-
 
 	public long getAptCode() {
 		return aptCode;
@@ -109,15 +106,5 @@ public class ZzimAptDetail {
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
 	}
-	
-	@Override
-	public String toString() {
-		return "LikeCount [aptCode=" + aptCode + ", aptName=" + aptName + ", dongCode=" + dongCode + ", buildYear="
-				+ buildYear + ", jibun=" + jibun + ", lat=" + lat + ", lng=" + lng + ", img=" + img + ", cnt=" + cnt
-				+ "]";
-	}
-	
-	
-
 
 }

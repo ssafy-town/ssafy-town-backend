@@ -31,18 +31,19 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	//	[POST] 회원가입
-		//  ex)
-		//	http://localhost/member/signUp
-		//  body - raw (json)
-		//	{
-		//	    "id" : "abcd",
-		//	    "pw" : "1234",
-		//	    "name" : "김철수",
-		//	    "addr" : "구미 진평동 사랑채",
-		//	    "tel" : "010-9323-1234"
-		//
-		//	}
+	// 회원가입
+	// [POST] Body(id, pw, name, addr, tel, regions, img)
+	// ex)
+	// http://localhost/member/signUp
+	//	{
+	//	    "id" : "abcd",
+	//	    "pw" : "1234",
+	//	    "name" : "김철수",
+	//	    "addr" : "구미 진평동 사랑채",
+	//	    "tel" : "010-9323-1234",
+	//		"regions" : "경상북도 구미시 진평동",
+	//		"img" : ""
+	//	}
 	@PostMapping("/signUp")
 	public ResponseEntity<?> signup(@RequestBody Member member) {
 	    try {
@@ -58,16 +59,17 @@ public class MemberController {
 	    }
 	}
 	
-	//	[POST] 로그인
-		// 	ex)
-		//	http://localhost/member/login
-		//  body - raw (json)
-		//	{
-		//	    "id" : "abcd",
-		//	    "pw" : "1234",
-		//	}
+	// 로그인
+	// [POST] Session(id)
+	//		  Body(id, pw)
+	// 	ex)
+	//	http://localhost/member/login
+	//	{
+	//	    "id" : "abcd",
+	//	    "pw" : "1234",
+	//	}
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody Member member, HttpSession session) {
+	public ResponseEntity<?> login(HttpSession session, @RequestBody Member member) {
 	    try {
 	        Member validMember = memberService.login(member);
 	        
@@ -90,16 +92,17 @@ public class MemberController {
 	    }
 	}
 	
-	//	[GET] 로그아웃
-		//	ex)
-		//  현재 저장되어 있는 session을 자동으로 불러와 속성 조회 후 있다면 로그아웃
-		//	http://localhost/member/logout
+	// 로그아웃
+	// [GET] Session(id)
+	// ex)
+	// http://localhost/member/logout
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 	    try {
 	        if(session.getAttribute("member") != null) {	// session에 member가 저장되어 있다면
 	        	String responseMessage = session.getAttribute("member") + "님 로그인 성공";
 	        	session.removeAttribute("member");
+	        	
 	            return ResponseEntity.accepted().body(responseMessage);
 	        } else {	// session에 member가 저장되어 있지 않다면
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 필요");
@@ -110,57 +113,43 @@ public class MemberController {
 	    }
 	}
 	
+	// 현재 로그인되어 있는 멤버 확인
+	// [GET] Session(id)
+	// ex)
+	// http://localhost/member/checkLogin)
 	@GetMapping("/checkLogin")
 	public ResponseEntity<?> checkLogin(HttpSession session) {
 	    try {
 	        if(session.getAttribute("member") != null) {	// session에 member가 저장되어 있다면
-	        	String responseMessage = session.getAttribute("member") + "님 로그인 성공";
-	        	session.removeAttribute("member");
+	        	String responseMessage = session.getAttribute("member") + "님 로그인중입니다";
 	            return ResponseEntity.accepted().body(responseMessage);
 	        } else {	// session에 member가 저장되어 있지 않다면
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 필요");
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 확인 실패 ");
 	        }
 	    } catch (Exception e) {	
 	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그아웃 실패");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 확인 실패");
 	    }
 	}
-	
-	
-	
-	//  [POST] 비밀번호 찾기
-		//  ex)
-		//	id와 이름 입력
-		//  body - raw (json)
-		//	http://localhost/member/findPassword
-		//	{
-		//	    "id" : "abcd",
-		//	    "name" : "최유리",
-		//	}
-	@PostMapping("/findPassword")
-	public ResponseEntity<?> findPassword(@RequestBody Member member) {
-	    try {
-	    	
-	        Member foundMember = memberService.searchMember(member.getId());
-	        if (foundMember != null && foundMember.getName().equals(member.getName())) {
-	        	 return new ResponseEntity<>(foundMember.getPw(), HttpStatus.OK);
-	        } else {	// ID와 이름이 일치하지 않는다면
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID 또는 이름 불일치");
-	        }
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 변경 실패");
-	    }
+
+	// 전체 회원 조회
+	// [GET] Param()
+	// ex)
+	// http://localhost/member/memberList
+	@GetMapping("/memberList")
+	public ResponseEntity<?> getMemberList() throws Exception { 
+		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
 	}
 	
-	//	[GET] 회원 검색
-		// 	RequestParam("id")
-		// 	ex)
-		//	http://localhost/member/searchMember?id=abcd
+	// 회원 검색
+	// [GET] Param(id)
+	// ex)
+	// http://localhost/member/searchMember?id=abcd
 	@GetMapping("/searchMember")
 	public ResponseEntity<?> searchMember(@RequestParam("id") String id) {
 		try {
 			Member member = memberService.searchMember(id);
+			
 			if(member != null) {
 				return ResponseEntity.accepted().body(member);
 			} else {
@@ -172,57 +161,66 @@ public class MemberController {
 		}
 	}
 	
-	//	[DELETE] 회원 탈퇴
-		// 	RequestParam("id")
-		//	ex)
-		//	http://localhost/member/deleteMember?id=abcd
-	@DeleteMapping("/deleteMember")
-	public ResponseEntity<?> deleteMember(HttpSession session) {
-		try {
-			 String userId = (String) session.getAttribute("member");
-	         if (userId == null) {
-	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
-	         }
-			
-			int result = memberService.deleteMember(userId);
-			if(result != 0) {
-				return ResponseEntity.accepted().body("회원 삭제 성공");				
-			}
-			else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않음.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 삭제 실패");
-		}
+	// 비밀번호 찾기
+	// [POST] Body(id, name)
+	// ex)
+	// http://localhost/member/findPassword
+	// {
+	//	    "id" : "abcd",
+	//	    "name" : "최유리",
+	// }
+	@PostMapping("/findPassword")
+	public ResponseEntity<?> findPassword(@RequestBody Member member) {
+	    try {
+	        Member foundMember = memberService.searchMember(member.getId());
+	        
+	        if (foundMember != null && foundMember.getName().equals(member.getName())) {
+	        	 return new ResponseEntity<>(foundMember.getPw(), HttpStatus.OK);
+	        } else {	// ID와 이름이 일치하지 않는다면
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID 또는 이름 불일치");
+	        }
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 찾기 실패");
+	    }
 	}
 	
-	//	[PUT] 회원 정보 업데이트
-		//  body - raw (json)
-		// 	ex)
-		//	http://localhost/member/updateMember
-		//	{
-		//	    "id" : "abcd",
-		//	    "pw" : "1234",
-		//	    "name" : "박미선",
-		//	    "addr" : "대구시 대현동 경북대 기숙사",
-		//	    "tel" : "010-9345-1234"
-		//	}
+	// 회원 정보 업데이트
+	// [PUT] Session(id)
+	//		 Body(id, pw, name, addr, tel, img)
+	//  body - raw (json)
+	// 	ex)
+	//	http://localhost/member/updateMember
+	//	{
+	//	    "pw" : "1234",
+	//	    "name" : "박미선",
+	//	    "addr" : "대구시 대현동 경북대 기숙사",
+	//	    "tel" : "010-9345-1234",
+	//		"regions" : "경상남도 창원시 용호동",
+	//		"img" :	""
+	//	}
 	@PutMapping("/updateMember")
-	public ResponseEntity<?> updateMember(@RequestBody Member member, HttpSession session) {
+	public ResponseEntity<?> updateMember(HttpSession session, @RequestBody Member member) {
 		try {
-			 String userId = (String) session.getAttribute("member");
-	         if (userId == null) {
-	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
-	         }
+			String userId = (String) session.getAttribute("member");
+	        if (userId == null) {
+	        	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+	        }
 	        
-	         Member findMember = memberService.searchMember(userId);
-	         
-	         
+	        Member findMember = memberService.searchMember(userId);
+	     
+	        if(member.getAddr() == null) {
+	        	member.setAddr(findMember.getAddr());
+	        }
+	        if(member.getTel() == null) {
+	        	member.setTel(findMember.getTel());
+	        }
 	        if(member.getRegions() == null) {
 	        	member.setRegions(findMember.getRegions());
 	        }
-	         
+	        if(member.getImg() == null) {
+	        	member.setImg(findMember.getImg());
+	        }
 	         
 			int result = memberService.updateMember(member);
 			if(result !=0) {
@@ -235,24 +233,42 @@ public class MemberController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 정보 업데이트 실패");
 		}
+	}	
+	
+	// 회원 탈퇴
+	// [DELETE] Session(id)
+	// ex)
+	// http://localhost/member/deleteMember
+	@DeleteMapping("/deleteMember")
+	public ResponseEntity<?> deleteMember(HttpSession session) {
+		try {
+			String userId = (String) session.getAttribute("member");
+	        if (userId == null) {
+	        	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+	        }
+			
+			int result = memberService.deleteMember(userId);
+			if(result != 0) {
+				return ResponseEntity.accepted().body("회원 삭제 성공");				
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원 삭제 실패");
+		}
 	}
 	
-	//	[GET] 회원 리스트 조회
-		//	ex)
-		//	http://localhost/member/memberList
-	@GetMapping("/memberList")
-	public ResponseEntity<?> getMemberList() throws Exception { 
-		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
-	}
-	
-	//	[POST] 찜하기
-		//  body - raw (json)
-		//	ex)
-		//	http://localhost/member/addZzim
-		//	{
-		//	    "userId" : "qwer",
-		//	    "aptCode" : "47111000000006"
-		//	}
+	// 찜하기
+	// [POST] Session(userId)
+	//		  Body(userId, aptCode)
+	// ex)
+	// http://localhost/member/addZzim
+	// {
+	//	    "userId" : "qwer",
+	//	    "aptCode" : "47111000000006"
+	// }
 	@PostMapping("/addZzim")
 	public ResponseEntity<?> addZzim(HttpSession session, @RequestParam("aptCode") String aptCode) {
         try {
@@ -276,11 +292,12 @@ public class MemberController {
         }
     }
 	
-	//	[GET] 찜 리스트 전체 조회(session)
-	//	ex)
-	//	http://localhost/member/zzimList
+	// 찜 횟수 많은 5개 찜 리스트 보기 (전체에서)
+	// [GET] Param()
+	// ex)
+	// http://localhost/member/zzimListAllWithCnt
 	@GetMapping("/zzimListAllWithCnt")
- public ResponseEntity<?> zzimListAllWithCnt(HttpSession session) {
+ public ResponseEntity<?> zzimListAllWithCnt() {
     try {
         List<ZzimAptDetail> list = memberService.getZzimListAllWithCnt();
         if (list.isEmpty()) {
@@ -293,9 +310,10 @@ public class MemberController {
     }
 }
 	
-	//	[GET] 나의 찜 리스트 전체 조회(session)
-		//	ex)
-		//	http://localhost/member/zzimList
+	// 나의 찜 리스트 전체 조회
+	// [GET] Session(userId)
+	// ex)
+	// http://localhost/member/zzimList
 	@GetMapping("/myZzimList")
 	 public ResponseEntity<?> zzimList(HttpSession session) {
         try {
@@ -316,12 +334,13 @@ public class MemberController {
     }
 
 	
-	//	[GET] 찜 리스트 상세 조회(aptCode로)
-		//  RequestParam("aptCode")
-		//	ex)
-		//	http://localhost/member/zzimList?aptCode=47111000000002
+	// 찜한 매물 상세 조회(aptCode)
+	// [GET] Session(userId)
+	//		 Param("aptCode")
+	// ex)
+	// http://localhost/member/zzimList?aptCode=47111000000002
 	@GetMapping("/myZzimListDetail")
-	public ResponseEntity<?> zzimListDetail(@RequestParam("aptCode") String aptCode, HttpSession session) {
+	public ResponseEntity<?> zzimListDetail(HttpSession session, @RequestParam("aptCode") String aptCode) {
         try {
             String userId = (String) session.getAttribute("member");
             if (userId == null) {
@@ -340,12 +359,11 @@ public class MemberController {
         }
     }
 	
-	
-	
-	//	[DELETE] 찜 삭제(aptCode로)
-		//	RequestParam("aptCode")
-		//	ex)
-		//	http://localhost/member/removeZzim?aptCode=47111000000002
+	// 찜 삭제
+	// [DELETE] Session(userId)
+	// Param(aptCode)
+	// ex)
+	// http://localhost/member/removeZzim?aptCode=47111000000002
 	@DeleteMapping("/removeZzim")
 	 public ResponseEntity<?> removeZzim(@RequestParam("aptCode") String aptCode, HttpSession session) {
 		try {
@@ -368,6 +386,11 @@ public class MemberController {
         }
     }
 	
+	
+	// 모든 찜 리스트 삭제 (개발용)
+	// [DELETE] Param()
+	// ex)
+	// http://localhost/member/removeZzimAll
 	@DeleteMapping("/removeZzimAll")
 	 public ResponseEntity<?> removeZzimAll() {
 		try {
@@ -378,8 +401,5 @@ public class MemberController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("전체 찜 삭제 실패");
 		}
        } 
- 
 
 }
-	
-

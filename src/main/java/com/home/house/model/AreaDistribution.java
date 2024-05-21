@@ -7,7 +7,6 @@ public class AreaDistribution {
     private int range90to120;
     private int range120to150;
 
-    // Getters and Setters
 
     public int getRange0to30() {
         return range0to30;
@@ -48,4 +47,5 @@ public class AreaDistribution {
     public void setRange120to150(int range120to150) {
         this.range120to150 = range120to150;
     }
+    
 }

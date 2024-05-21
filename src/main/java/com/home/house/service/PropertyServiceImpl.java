@@ -16,28 +16,28 @@ public class PropertyServiceImpl implements PropertyService{
 	private PropertyMapper propertyMapper;
 
 	@Override
-	public List<Property> getList() {
-		return propertyMapper.getList();
+	public List<Property> getListAll() {
+		return propertyMapper.getListAll();
 	}
 	
 	@Override
-	public List<Property> getMyList(String userId) {
-		return propertyMapper.getMyList(userId);
+	public List<Property> getListMy(String userId) {
+		return propertyMapper.getListMy(userId);
 	}
 
 	@Override
-	public Property getDetail(String idx) {
-		return propertyMapper.getDetail(idx);
+	public Property getDetailProperty(String idx) {
+		return propertyMapper.getDetailProperty(idx);
 	}
 
 	@Override
-	public void add(Property property) {
-		propertyMapper.add(property);
+	public void addProperty(Property property) {
+		propertyMapper.addProperty(property);
 	}
 
 	@Override
-	public void update(Property property) {
-		propertyMapper.update(property);
+	public void updateProperty(Property property) {
+		propertyMapper.updateProperty(property);
 	}
 
 	@Override
@@ -48,10 +48,9 @@ public class PropertyServiceImpl implements PropertyService{
 	
 	@Override
 	@Transactional
-	public void remove(String idx) {
-		propertyMapper.remove(idx);
+	public void removeProperty(String idx) {
+		propertyMapper.removeProperty(idx);
 	}
-
 
 
 

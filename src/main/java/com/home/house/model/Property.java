@@ -47,8 +47,6 @@ public class Property implements Serializable{
 		this.dongType = dongType;
 	}
 
-
-
 	public int getIdx() {
 		return idx;
 	}
@@ -184,6 +182,5 @@ public class Property implements Serializable{
 	public void setDongType(String dongType) {
 		this.dongType = dongType;
 	}
-	
 	
 }

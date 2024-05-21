@@ -33,6 +33,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/news")
 @CrossOrigin("*")
 public class NewsController {
+	
+	// 뉴스 API를 불러와 크롤링하기
+	// [GET] Param()
+	// ex)
+	// localhost/news
     @GetMapping("")
     public ResponseEntity<?> news() {
         String clientId = "WpsYcPTYp47T6ZURym7F"; // 애플리케이션 클라이언트 아이디
@@ -51,34 +56,31 @@ public class NewsController {
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
-        // Get API response
+        // API response 얻기
         String responseBody = get(apiURL, requestHeaders);
 
-        // Parse JSON response
+        // JSON response 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(responseBody);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse JSON response", e);
+            throw new RuntimeException("JSON response Parsing 실패", e);
         }
 
-        // Extract relevant information from JSON response
+        // JSON response에서 필요한 정보 추출하기
         List<String> newsList = new ArrayList<>();
         JsonNode itemsNode = jsonNode.get("items");
         if (itemsNode != null && itemsNode.isArray()) {
             for (JsonNode itemNode : itemsNode) {
                 String titleWithTags = itemNode.get("title").asText();
-                String title = removeHtmlTags(titleWithTags); // Remove HTML tags from title
-
+                String title = removeHtmlTags(titleWithTags); // title에서 HTML 태그 제거
                 String link = itemNode.get("link").asText();
-                
                 String descriptionWithTags = itemNode.get("description").asText();
-                String description = removeHtmlTags(removeQuot(descriptionWithTags)); // Remove HTML tags from description
-
+                String description = removeHtmlTags(removeQuot(descriptionWithTags)); // description에서 HTML 태그 제거, &quot 제거
                 String pubDateStr = itemNode.get("pubDate").asText();
 
-                // Parse pubDate string into year, month, day, hour, minute, second
+                // pubDateStr을 파싱하여 년, 월, 일, 시, 분, 초 파싱하기
                 String[] pubDateComponents = parsePubDate(pubDateStr);
                 int year = Integer.parseInt(pubDateComponents[0]);
                 int month = Integer.parseInt(pubDateComponents[1]);
@@ -115,8 +117,8 @@ public class NewsController {
 
             // Extract individual components
             String[] pubDateComponents = new String[6];
-            pubDateComponents[0] = String.valueOf(date.getYear() + 1900); // Adding 1900 because Date.getYear() returns the year minus 1900
-            pubDateComponents[1] = String.valueOf(date.getMonth() + 1); // Month index starts from 0
+            pubDateComponents[0] = String.valueOf(date.getYear() + 1900); // 1900을 제거하면 현재 년도가 나옴
+            pubDateComponents[1] = String.valueOf(date.getMonth() + 1); // index가 0부터 시작하므로 +1
             pubDateComponents[2] = String.valueOf(date.getDate());
             pubDateComponents[3] = String.valueOf(date.getHours());
             pubDateComponents[4] = String.valueOf(date.getMinutes());
@@ -124,7 +126,7 @@ public class NewsController {
 
             return pubDateComponents;
         } catch (ParseException e) {
-            throw new RuntimeException("Failed to parse pubDate", e);
+            throw new RuntimeException("parse pubDate 실패", e);
         }
     }
 
@@ -135,9 +137,9 @@ public class NewsController {
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
-            con.setRequestMethod("GET");
-            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
-                con.setRequestProperty(header.getKey(), header.getValue());
+	            con.setRequestMethod("GET");
+	            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
+	                con.setRequestProperty(header.getKey(), header.getValue());
             }
 
             int responseCode = con.getResponseCode();

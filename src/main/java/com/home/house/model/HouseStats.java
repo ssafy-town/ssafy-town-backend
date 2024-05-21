@@ -7,8 +7,6 @@ public class HouseStats {
     private List<YearlyDealStats> yearlyDealStats;
     private AreaDistribution areaDistribution;
 
-    // Getters and Setters
-
     public List<HouseInfo> getHouseInfos() {
         return houseInfos;
     }
@@ -32,4 +30,5 @@ public class HouseStats {
     public void setAreaDistribution(AreaDistribution areaDistribution) {
         this.areaDistribution = areaDistribution;
     }
+    
 }

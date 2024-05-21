@@ -6,8 +6,6 @@ public class YearlyDealStats {
     private String minDealAmount;
     private String avgDealAmount;
 
-    // Getters and Setters
-
     public String getDealYear() {
         return dealYear;
     }
@@ -39,4 +37,5 @@ public class YearlyDealStats {
     public void setAvgDealAmount(String avgDealAmount) {
         this.avgDealAmount = avgDealAmount;
     }
+    
 }

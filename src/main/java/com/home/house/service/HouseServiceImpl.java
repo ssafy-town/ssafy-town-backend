@@ -23,15 +23,63 @@ public class HouseServiceImpl implements HouseService{
 	private HouseMapper houseMapper;
 
 	@Override
-	public List<HouseInfo> searchByDong(String dongName) {
-		return houseMapper.searchByDong(dongName);
+	public HouseStats searchBySelectOptionWithStats(Map<String, String> params) {
+		List<HouseInfo> houseInfos = houseMapper.searchBySelectOptionExcludeDate(params);
+		List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYear(params);
+		AreaDistribution areaDistribution = houseMapper.getAreaDistribution(params);
+	
+		HouseStats houseStats = new HouseStats();
+		houseStats.setHouseInfos(houseInfos);
+		houseStats.setYearlyDealStats(yearlyDealStats);
+		houseStats.setAreaDistribution(areaDistribution);
+	
+		return houseStats;
 	}
 
+	@Override
+	public List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params){
+		return houseMapper.searchBySelectOptionExcludeDate(params);
+	}
+	
+	@Override
+	public List<HouseInfo> searchBySelectOption(FindDeal findDeal) {
+		return houseMapper.searchBySelectOption(findDeal);
+	}
+
+	@Override
+	public HouseStats searchByKeywordWithStats(String keyword) {
+		List<HouseInfo> houseInfos = houseMapper.searchByKeyword(keyword);
+
+	    List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYearByKeyword(keyword);
+	    AreaDistribution areaDistribution = houseMapper.getAreaDistributionByKeyword(keyword);
+
+	    HouseStats houseStats = new HouseStats();
+	    houseStats.setHouseInfos(houseInfos);
+	    houseStats.setYearlyDealStats(yearlyDealStats);
+	    houseStats.setAreaDistribution(areaDistribution);
+
+	    return houseStats;
+	}
+	
 	@Override
 	public List<HouseInfo> searchByKeyword(String keyword) {
 		return houseMapper.searchByKeyword(keyword);
 	}
 
+	@Override
+	public HouseDetailStats searchByDetail(String aptCode) {
+		List<HouseInfo> houseInfos = houseMapper.searchByAptCode(aptCode);
+		
+		List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYearByAptCode(aptCode);
+		List<FloorDealStats> floorDealStats = houseMapper.getDealStatsByFloorByAptCode(aptCode);
+		
+		HouseDetailStats houseDetailStats = new HouseDetailStats();
+		houseDetailStats.setHouseInfos(houseInfos);
+		houseDetailStats.setYearlyDealStats(yearlyDealStats);
+		houseDetailStats.setFloorDealStats(floorDealStats);
+		return houseDetailStats;
+	}
+	
 	@Override
 	public List<String> getSidoList() {
 		return houseMapper.getSidoList();
@@ -56,77 +104,6 @@ public class HouseServiceImpl implements HouseService{
 	public List<String> getMonthList() {
 		return houseMapper.getMonthList();
 	}
-
-	@Override
-	public List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params){
-		return houseMapper.searchBySelectOptionExcludeDate(params);
-	}
 	
-	@Override
-	public List<HouseInfo> searchBySelectOption(FindDeal findDeal) {
-		return houseMapper.searchBySelectOption(findDeal);
-	}
-	
-	@Override
-	public List<HouseInfo> searchByAptCode(String aptCode) {
-		return houseMapper.searchByAptCode(aptCode);
-	}
-	
-	@Override
-	public HouseStats searchBySelectOptionWithStats(Map<String, String> params) {
-		List<HouseInfo> houseInfos = houseMapper.searchBySelectOptionExcludeDate(params);
-		List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYear(params);
-		AreaDistribution areaDistribution = houseMapper.getAreaDistribution(params);
-	
-		HouseStats houseStats = new HouseStats();
-		houseStats.setHouseInfos(houseInfos);
-		houseStats.setYearlyDealStats(yearlyDealStats);
-		houseStats.setAreaDistribution(areaDistribution);
-	
-		return houseStats;
-	}
-
-	@Override
-	public HouseStats searchByDongWithStats(String dongName) {
-		List<HouseInfo> houseInfos = houseMapper.searchByDong(dongName);
-	    List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYearByDong(dongName);
-	    AreaDistribution areaDistribution = houseMapper.getAreaDistributionByDong(dongName);
-
-	    HouseStats houseStats = new HouseStats();
-	    houseStats.setHouseInfos(houseInfos);
-	    houseStats.setYearlyDealStats(yearlyDealStats);
-	    houseStats.setAreaDistribution(areaDistribution);
-
-	    return houseStats;
-	}
-
-	@Override
-	public HouseStats searchByKeywordWithStats(String keyword) {
-		List<HouseInfo> houseInfos = houseMapper.searchByKeyword(keyword);
-
-	    List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYearByKeyword(keyword);
-	    AreaDistribution areaDistribution = houseMapper.getAreaDistributionByKeyword(keyword);
-
-	    HouseStats houseStats = new HouseStats();
-	    houseStats.setHouseInfos(houseInfos);
-	    houseStats.setYearlyDealStats(yearlyDealStats);
-	    houseStats.setAreaDistribution(areaDistribution);
-
-	    return houseStats;
-	}
-
-	@Override
-	public HouseDetailStats searchByDetail(String aptCode) {
-		List<HouseInfo> houseInfos = houseMapper.searchByAptCode(aptCode);
-		
-		List<YearlyDealStats> yearlyDealStats = houseMapper.getDealStatsByYearByAptCode(aptCode);
-		List<FloorDealStats> floorDealStats = houseMapper.getDealStatsByFloorByAptCode(aptCode);
-		
-		HouseDetailStats houseDetailStats = new HouseDetailStats();
-		houseDetailStats.setHouseInfos(houseInfos);
-		houseDetailStats.setYearlyDealStats(yearlyDealStats);
-		houseDetailStats.setFloorDealStats(floorDealStats);
-		return houseDetailStats;
-	}
 	
 }

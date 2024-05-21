@@ -1,10 +1,5 @@
 package com.home.house.model;
 
-//import lombok.Getter;
-//import lombok.Setter;
-
-//@Getter
-//@Setter
 public class HouseInfo {
 	private long no;
 	private String dong;
