@@ -124,7 +124,7 @@ public class MemberController {
 	        	String responseMessage = session.getAttribute("member") + "님 로그인중입니다";
 	            return ResponseEntity.accepted().body(responseMessage);
 	        } else {	// session에 member가 저장되어 있지 않다면
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인 확인 실패 ");
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그아웃 상태 ");
 	        }
 	    } catch (Exception e) {	
 	        e.printStackTrace();
@@ -249,6 +249,7 @@ public class MemberController {
 			
 			int result = memberService.deleteMember(userId);
 			if(result != 0) {
+				session.removeAttribute("member");
 				return ResponseEntity.accepted().body("회원 삭제 성공");				
 			}
 			else {
