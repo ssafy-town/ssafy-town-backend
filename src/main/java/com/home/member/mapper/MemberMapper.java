@@ -10,8 +10,9 @@ import com.home.member.model.Member;
 public interface MemberMapper {
 	public void signUp(Member member);
 	public boolean isMemberExists(String id);
-	public int login(Member member);
+	public Member login(Member member);
 	public Member searchMember(String id);
+	public Member checkIdName(Member member);
 	public int deleteMember(String id);
 	public int updateMember(Member member);
 	List<Member> getMemberList();

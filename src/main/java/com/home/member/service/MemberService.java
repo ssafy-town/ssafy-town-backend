@@ -9,7 +9,8 @@ import com.home.member.model.ZzimAptDetail;
 public interface MemberService {
 	public void signUp(Member member);
 	public boolean isMemberExists(String id);
-	public int login(Member member);
+	public boolean checkIdName(Member member);
+	public Member login(Member member);
 	public Member searchMember(String id);
 	public int deleteMember(String id);
 	public int updateMember(Member member);

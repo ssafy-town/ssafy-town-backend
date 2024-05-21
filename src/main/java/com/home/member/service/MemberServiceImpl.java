@@ -20,11 +20,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private ZzimAptMapper zzimAptMapper;
-	
-	public MemberServiceImpl(MemberMapper memberMapper) {
-		super();
-		this.memberMapper = memberMapper;
-	}
 
 	@Override
 	public void signUp(Member member){
@@ -36,9 +31,15 @@ public class MemberServiceImpl implements MemberService {
 	    Member member = memberMapper.searchMember(id);
 	    return member != null;
 	}
+	
+	@Override
+	public boolean checkIdName(Member member) {
+		Member checkMember = memberMapper.checkIdName(member);
+		return checkMember != null;
+	}
 
 	@Override
-	public int login(Member member){
+	public Member login(Member member){
 		return memberMapper.login(member);
 	}
 
@@ -97,4 +98,6 @@ public class MemberServiceImpl implements MemberService {
 	public ZzimAptDetail getZzimListDetail(ZzimApt zzimApt) {
 		 return zzimAptMapper.getZzimListDetail(zzimApt);
 	}
+
+
 }

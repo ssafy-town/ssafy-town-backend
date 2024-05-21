@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.home.member.model.FindMember;
 import com.home.member.model.Member;
 import com.home.member.model.ZzimApt;
 import com.home.member.model.ZzimAptDetail;
@@ -68,12 +69,18 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Member member, HttpSession session) {
 	    try {
-	        int id = memberService.login(member);
+	        Member validMember = memberService.login(member);
 	        
-	        if(id > 0) {	// 존재하는 회원이라면
+	        if(validMember != null) {	// 존재하는 회원이라면
 	            session.setAttribute("member", member.getId());
-	            String responseMessage = member.getId() + "님 로그인 성공";
-	            return ResponseEntity.accepted().body(responseMessage);
+	            
+	            FindMember findMember = new FindMember();
+	            findMember.setId(validMember.getId());
+	            findMember.setAddr(validMember.getAddr());
+	            findMember.setTel(validMember.getTel());
+	            findMember.setRegions(validMember.getRegions());
+	            
+	            return new ResponseEntity<>(findMember, HttpStatus.OK);
 	        } else {	// 일치하는 회원이 없는 경우
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 회원");
 	        }
@@ -123,24 +130,20 @@ public class MemberController {
 	
 	//  [POST] 비밀번호 찾기
 		//  ex)
-		//	id와 이름, 변경할 pw입력
+		//	id와 이름 입력
 		//  body - raw (json)
 		//	http://localhost/member/findPassword
 		//	{
 		//	    "id" : "abcd",
 		//	    "name" : "최유리",
-		//	    "pw" : "5678"
 		//	}
 	@PostMapping("/findPassword")
 	public ResponseEntity<?> findPassword(@RequestBody Member member) {
 	    try {
-	        // ID와 이름을 통해 회원이 존재하는지 확인
+	    	
 	        Member foundMember = memberService.searchMember(member.getId());
 	        if (foundMember != null && foundMember.getName().equals(member.getName())) {
-	            // 찾은 회원이 존재하고 입력한 이름과 일치하면 입력한 비밀번호로 변경
-	            foundMember.setPw(member.getPw());
-	            memberService.updateMember(foundMember);
-	            return ResponseEntity.accepted().body("비밀번호 변경 성공");
+	        	 return new ResponseEntity<>(foundMember.getPw(), HttpStatus.OK);
 	        } else {	// ID와 이름이 일치하지 않는다면
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID 또는 이름 불일치");
 	        }
