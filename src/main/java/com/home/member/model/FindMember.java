@@ -7,6 +7,7 @@ public class FindMember {
 	private String addr;
 	private String tel;
 	private String regions;
+	private String img;
 	
 	public String getId() {
 		return id;
@@ -46,6 +47,14 @@ public class FindMember {
 
 	public void setRegions(String regions) {
 		this.regions = regions;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 	

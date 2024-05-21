@@ -10,6 +10,7 @@ public class Member {
 	private String addr;
 	private String tel;
 	private String regions;
+	private String img;
 	
 	public String getId() {
 		return id;
@@ -49,11 +50,21 @@ public class Member {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
+	
 	public String getRegions() {
 		return regions;
 	}
+	
 	public void setRegions(String regions) {
 		this.regions = regions;
+	}
+	
+	public String getImg() {
+		return img;
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 	

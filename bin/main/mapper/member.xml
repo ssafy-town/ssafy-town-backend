@@ -5,8 +5,8 @@
 <mapper namespace="com.home.member.mapper.MemberMapper">
 
 	<insert id="signUp" parameterType="member">
-		insert into member(id, pw, name, addr, tel, regions) 
-		values (#{id}, #{pw}, #{name}, #{addr}, #{tel}, #{regions})
+		insert into member(id, pw, name, addr, tel, regions, img) 
+		values (#{id}, #{pw}, #{name}, #{addr}, #{tel}, #{regions}, #{img})
 	</insert>
 	
 	<select id="isMemberExists" parameterType="string" resultType="boolean">
@@ -19,7 +19,7 @@
 	</select>
 	
 	<select id="login" parameterType="member" resultType="member">
-		select id, name, addr, tel, regions from member
+		select id, name, addr, tel, regions, img from member
 		where id = #{id} and pw = #{pw}
 	</select>
 	
@@ -29,7 +29,7 @@
 	</select>
 	
 	<update id="updateMember" parameterType="member">
-		update member set tel=#{tel}, pw=#{pw}, name=#{name}, addr=#{addr}, regions=#{regions}
+		update member set tel=#{tel}, pw=#{pw}, name=#{name}, addr=#{addr}, regions=#{regions}, img=#{img}
 		where id = #{id}
 	</update>
 	
