@@ -41,6 +41,7 @@
 	</delete>
 	
 	 <select id="isZzimExists" resultType="int">
+	 
         SELECT COUNT(*) FROM ZzimApt WHERE userId = #{userId} AND aptCode = #{aptCode}
     </select>
 

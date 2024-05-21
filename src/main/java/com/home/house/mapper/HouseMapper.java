@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.home.house.model.FindDeal;
+import com.home.house.model.FloorDealStats;
 import com.home.house.model.HouseInfo;
 import com.home.house.model.YearlyDealStats;
 import com.home.house.model.AreaDistribution;
@@ -21,6 +22,7 @@ public interface HouseMapper {
     List<String> getMonthList();
     List<HouseInfo> searchBySelectOptionExcludeDate(Map<String, String> params);
     List<HouseInfo> searchBySelectOption(FindDeal findDeal);
+    List<HouseInfo> searchByAptCode(String aptCode);
 
     // New methods for statistics
     List<YearlyDealStats> getDealStatsByYear(Map<String, String> params);
@@ -29,5 +31,7 @@ public interface HouseMapper {
     AreaDistribution getAreaDistributionByDong(String dongName);
     List<YearlyDealStats> getDealStatsByYearByKeyword(String keyword);
     AreaDistribution getAreaDistributionByKeyword(String keyword);
+    List<YearlyDealStats> getDealStatsByYearByAptCode(String aptCode);
+    List<FloorDealStats> getDealStatsByFloorByAptCode(String aptCode);
     
 }

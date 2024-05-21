@@ -22,6 +22,14 @@
 		using(aptCode)
 		where apartmentName like CONCAT('%', #{keyword}, '%')
 	</select>
+	
+	<select id="searchByAptCode" parameterType="string" resultType="houseInfo">
+		select no, dong, apartmentName, aptCode, dealAmount, buildYear, dealYear, dealMonth, dealDay, area, floor, lat, lng, jibun, img
+		from housedeal
+		join houseinfo 
+		using(aptCode)
+		where aptcode = #{aptCode} 
+	</select>
 
 	<select id="getSidoList" parameterType="string" resultType="String">
 		select distinct sidoName
@@ -154,7 +162,27 @@
        	where apartmentName like CONCAT('%', #{keyword}, '%')
     </select>
     
-	
+    <select id="getDealStatsByYearByAptCode" parameterType="String" resultType="com.home.house.model.YearlyDealStats">
+	    SELECT 
+	        dealYear,
+	        MAX(CAST(REPLACE(dealAmount, ',', '') AS DECIMAL(10,0))) AS maxDealAmount,
+	        MIN(CAST(REPLACE(dealAmount, ',', '') AS DECIMAL(10,0))) AS minDealAmount,
+	        AVG(CAST(REPLACE(dealAmount, ',', '') AS DECIMAL(10,1))) AS avgDealAmount
+	    FROM housedeal
+	    JOIN houseinfo USING (aptCode)
+	    where aptCode = #{aptCode}
+	    GROUP BY dealYear
+	</select>
 
+    <select id="getDealStatsByFloorByAptCode" parameterType="String" resultType="com.home.house.model.FloorDealStats">
+        SELECT 
+            SUM(CASE WHEN floor BETWEEN 1 AND 5 THEN 1 ELSE 0 END) AS range0to5,
+            SUM(CASE WHEN floor BETWEEN 5 AND 10 THEN 1 ELSE 0 END) AS range5to10,
+            SUM(CASE WHEN floor BETWEEN 10 AND 15 THEN 1 ELSE 0 END) AS range10to15,
+            SUM(CASE WHEN floor > 15 THEN 1 ELSE 0 END) AS range15over
+        FROM housedeal
+        JOIN houseinfo USING (aptCode)
+       	where aptCode = #{aptCode}
+    </select>
 
 </mapper>
