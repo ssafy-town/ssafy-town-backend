@@ -7,7 +7,6 @@ public class HouseDetailStats {
     private List<YearlyDealStats> yearlyDealStats;
     private List<FloorDealStats> floorDealStats;
 
-    // Getters and Setters
 
     public List<HouseInfo> getHouseInfos() {
         return houseInfos;
@@ -32,6 +31,5 @@ public class HouseDetailStats {
 	public void setFloorDealStats(List<FloorDealStats> floorDealStats) {
 		this.floorDealStats = floorDealStats;
 	}
-
 
 }

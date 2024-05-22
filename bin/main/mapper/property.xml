@@ -4,40 +4,47 @@
 	
 <mapper namespace="com.home.house.mapper.PropertyMapper">
 
-	<select id="getList" resultType="Property">
+	<select id="getListAll" resultType="Property">
 		select * 
 		from property
 	</select>
 	
-	<select id="getMyList" parameterType="String" resultType="Property">
+	<select id="getListMy" parameterType="String" resultType="Property">
 		select * 
 		from property
 		where id=#{userId}
 	</select>
 	
-	
-	<select id="getDetail" parameterType="String" resultType="Property">
+	<select id="getDetailProperty" parameterType="String" resultType="Property">
 		select * 
 		from property
 		where idx = #{idx}
 	</select>
 	
-	<insert id="add" parameterType="Property">
-		insert into property (id, title, date, expireDate, price, managementPrice, managementDesc, roomType, floorNow, floorTotal, roomSize, content, img, keyword, addr, dongType)
-		values (#{id},#{title},now(),#{expireDate}, #{price},#{managementPrice},#{managementDesc},#{roomType},#{floorNow},#{floorTotal},#{roomSize},#{content},#{img},#{keyword},#{addr},#{dongType})
+	<insert id="addProperty" parameterType="Property">
+		insert into property 
+			(id, title, date, expireDate, price, managementPrice, managementDesc, roomType, 
+			 floorNow, floorTotal, roomSize, content, img, keyword, addr, dongType)
+		values (#{id}, #{title}, now(), #{expireDate}, #{price}, #{managementPrice}, #{managementDesc}, #{roomType},
+				#{floorNow}, #{floorTotal}, #{roomSize}, #{content}, #{img}, #{keyword}, #{addr}, #{dongType})
 	</insert>	
 
-	<update id="update" parameterType="Property">
+	<update id="updateProperty" parameterType="Property">
 		update property
-		set title = #{title}, expireDate=#{expireDate}, price=#{price}, managementPrice=#{managementPrice},managementDesc=#{managementDesc},roomType=#{roomType},floorNow=#{floorNow},floorTotal=#{floorTotal},roomSize=#{roomSize},content=#{content},img=#{img},keyword=#{keyword},addr=#{addr},dongType=#{dongType}
-		where idx = #{idx}
+		set 
+			title = #{title}, expireDate=#{expireDate}, price=#{price}, 
+			managementPrice=#{managementPrice}, managementDesc=#{managementDesc}, 
+			roomType=#{roomType}, floorNow=#{floorNow}, floorTotal=#{floorTotal}, roomSize=#{roomSize}, 
+			content=#{content}, img=#{img}, keyword=#{keyword}, addr=#{addr}, dongType=#{dongType}
 	</update>	
 	
 	<select id="isPropertyExists" parameterType="string" resultType="int">
-    	select count(idx) from property where idx = #{idx}
+    	select count(idx) 
+    	from property 
+    	where idx = #{idx}
 	</select>
 	
-	<delete id="remove" parameterType="String">
+	<delete id="removeProperty" parameterType="String">
 		delete 
 		from property
 		where idx = #{idx}

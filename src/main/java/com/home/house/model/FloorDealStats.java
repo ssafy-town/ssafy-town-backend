@@ -38,7 +38,4 @@ public class FloorDealStats {
 		this.range15over = range15over;
 	}
 
-
-
-   
 }

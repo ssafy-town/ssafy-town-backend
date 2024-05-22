@@ -8,12 +8,14 @@ import com.home.house.model.Property;
 
 @Mapper
 public interface PropertyMapper {
-	public List<Property> 	getList();
-	public List<Property> 	getMyList(String userId);
-	public Property 		getDetail(String idx);
-	public void 			add(Property property);
-	public void 			update(Property property);
-	public int isPropertyExists(String idx);
-	public void 			remove(String idx);
-//	public int 				count(PageBean bean);
+	public void 			addProperty(Property property);
+	
+	public List<Property> 	getListAll();
+	public List<Property> 	getListMy(String userId);
+	public Property 		getDetailProperty(String idx);
+	
+	public void 			updateProperty(Property property);
+	public int 				isPropertyExists(String idx);
+	
+	public void 			removeProperty(String idx);
 }

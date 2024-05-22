@@ -28,10 +28,17 @@
 		where id = #{id}
 	</select>
 	
-	<update id="updateMember" parameterType="member">
-		update member set tel=#{tel}, pw=#{pw}, name=#{name}, addr=#{addr}, regions=#{regions}, img=#{img}
-		where id = #{id}
-	</update>
+<update id="updateMember" parameterType="member">
+    update member 
+    set pw=#{pw}, 
+        name=#{name}, 
+        addr=#{addr}, 
+        tel=#{tel}, 
+        regions=#{regions}, 
+        img=#{img}
+    where id = #{id}
+</update>
+
 	
 	<delete id="deleteMember" parameterType="string">
 		delete from member

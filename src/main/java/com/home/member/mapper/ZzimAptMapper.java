@@ -11,9 +11,9 @@ import com.home.member.model.ZzimAptDetail;
 public interface ZzimAptMapper {
 	   void addZzim(ZzimApt zzimApt);
 	   public List<ZzimAptDetail> getZzimListAllWithCnt();
-	    List<ZzimAptDetail> getZzimList(String userId);
-	    ZzimAptDetail getZzimListDetail(ZzimApt zzimApt);
-	    void removeZzim(ZzimApt zzimApt);
-	    void removeZzimAll();
-	    int isZzimExists(ZzimApt zzimApt);
+	   List<ZzimAptDetail> getZzimList(String userId);
+	   ZzimAptDetail getZzimListDetail(ZzimApt zzimApt);
+	   void removeZzim(ZzimApt zzimApt);
+	   void removeZzimAll();
+	   int isZzimExists(ZzimApt zzimApt);
 }

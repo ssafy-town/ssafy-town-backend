@@ -30,12 +30,6 @@ public class ZzimApt {
 	public void setAptCode(long aptCode) {
 		this.aptCode = aptCode;
 	}
-	
-	@Override
-	public String toString() {
-		return "InterestApt [userId=" + userId + ", aptCode=" + aptCode + "]";
-	}
-	
 
 }
 

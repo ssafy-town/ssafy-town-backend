@@ -1,8 +1,5 @@
 package com.home.member.model;
 
-//import lombok.Data;
-
-//@Data
 public class Member {
 	private String id;
 	private String pw;
@@ -15,6 +12,7 @@ public class Member {
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -66,7 +64,5 @@ public class Member {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
-	
 	
 }

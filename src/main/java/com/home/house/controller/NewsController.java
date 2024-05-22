@@ -14,11 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +35,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/news")
 @CrossOrigin("*")
 public class NewsController {
-    @GetMapping("")
-    public ResponseEntity<?> news() {
+	
+	// 뉴스 API를 불러와 크롤링하기
+	// [GET] Param()
+	// ex)
+	// localhost/news
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Map<String, Object>>> news() {
         String clientId = "WpsYcPTYp47T6ZURym7F"; // 애플리케이션 클라이언트 아이디
         String clientSecret = "DrUaEdLwmq"; // 애플리케이션 클라이언트 시크릿
 
@@ -51,56 +58,40 @@ public class NewsController {
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
-        // Get API response
+        // API response 얻기
         String responseBody = get(apiURL, requestHeaders);
 
-        // Parse JSON response
+        // JSON response 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(responseBody);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse JSON response", e);
+            throw new RuntimeException("JSON response Parsing 실패", e);
         }
 
-        // Extract relevant information from JSON response
-        List<String> newsList = new ArrayList<>();
+        // JSON response에서 필요한 정보 추출하기
+        List<Map<String, Object>> newsList = new ArrayList<>();
         JsonNode itemsNode = jsonNode.get("items");
         if (itemsNode != null && itemsNode.isArray()) {
             for (JsonNode itemNode : itemsNode) {
-                String titleWithTags = itemNode.get("title").asText();
-                String title = removeHtmlTags(titleWithTags); // Remove HTML tags from title
-
-                String link = itemNode.get("link").asText();
-                
-                String descriptionWithTags = itemNode.get("description").asText();
-                String description = removeHtmlTags(removeQuot(descriptionWithTags)); // Remove HTML tags from description
-
+                Map<String, Object> newsItem = new LinkedHashMap<>(); // Use LinkedHashMap to maintain order
+                newsItem.put("title", removeHtmlTags(itemNode.get("title").asText()));
+                newsItem.put("link", itemNode.get("link").asText());
+                newsItem.put("description", removeHtmlTags(removeQuot(itemNode.get("description").asText())));
                 String pubDateStr = itemNode.get("pubDate").asText();
-
-                // Parse pubDate string into year, month, day, hour, minute, second
                 String[] pubDateComponents = parsePubDate(pubDateStr);
-                int year = Integer.parseInt(pubDateComponents[0]);
-                int month = Integer.parseInt(pubDateComponents[1]);
-                int day = Integer.parseInt(pubDateComponents[2]);
-                int hour = Integer.parseInt(pubDateComponents[3]);
-                int minute = Integer.parseInt(pubDateComponents[4]);
-                int second = Integer.parseInt(pubDateComponents[5]);
-
-                // Construct news item string
-                String newsItem = String.format("Title: %s\nLink: %s\nDescription: %s\nYear: %s\nMonth: %s\nDay: %s\nHour: %s\nMinute: %s\nSecond: %s",
-                        title, link, description, year, month, day, hour, minute, second);
+                newsItem.put("year", Integer.parseInt(pubDateComponents[0]));
+                newsItem.put("month", Integer.parseInt(pubDateComponents[1]));
+                newsItem.put("day", Integer.parseInt(pubDateComponents[2]));
+                newsItem.put("hour", Integer.parseInt(pubDateComponents[3]));
+                newsItem.put("minute", Integer.parseInt(pubDateComponents[4]));
+                newsItem.put("second", Integer.parseInt(pubDateComponents[5]));
                 newsList.add(newsItem);
             }
         }
 
-        // Construct response
-        StringBuilder responseBuilder = new StringBuilder();
-        for (String newsItem : newsList) {
-            responseBuilder.append(newsItem).append("\n\n");
-        }
-
-        return new ResponseEntity<>(responseBuilder.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(newsList, HttpStatus.OK);
     }
 
     private static String removeQuot(String input) {
@@ -115,8 +106,8 @@ public class NewsController {
 
             // Extract individual components
             String[] pubDateComponents = new String[6];
-            pubDateComponents[0] = String.valueOf(date.getYear() + 1900); // Adding 1900 because Date.getYear() returns the year minus 1900
-            pubDateComponents[1] = String.valueOf(date.getMonth() + 1); // Month index starts from 0
+            pubDateComponents[0] = String.valueOf(date.getYear() + 1900); // 1900을 제거하면 현재 년도가 나옴
+            pubDateComponents[1] = String.valueOf(date.getMonth() + 1); // index가 0부터 시작하므로 +1
             pubDateComponents[2] = String.valueOf(date.getDate());
             pubDateComponents[3] = String.valueOf(date.getHours());
             pubDateComponents[4] = String.valueOf(date.getMinutes());
@@ -124,7 +115,7 @@ public class NewsController {
 
             return pubDateComponents;
         } catch (ParseException e) {
-            throw new RuntimeException("Failed to parse pubDate", e);
+            throw new RuntimeException("parse pubDate 실패", e);
         }
     }
 
@@ -135,9 +126,9 @@ public class NewsController {
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
-            con.setRequestMethod("GET");
-            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
-                con.setRequestProperty(header.getKey(), header.getValue());
+	            con.setRequestMethod("GET");
+	            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
+	                con.setRequestProperty(header.getKey(), header.getValue());
             }
 
             int responseCode = con.getResponseCode();

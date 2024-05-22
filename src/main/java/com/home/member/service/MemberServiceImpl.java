@@ -65,10 +65,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void addZzim(ZzimApt zzimApt) {
-		Member findMember = memberMapper.searchMember(zzimApt.getUserId());
-		if(findMember==null) {
-			System.out.println("없는 회원. 예외처리 해야함.");
-		}
 		zzimAptMapper.addZzim(zzimApt);
 	}
 	
@@ -82,7 +78,6 @@ public class MemberServiceImpl implements MemberService {
 		List<ZzimAptDetail> list = zzimAptMapper.getZzimListAllWithCnt();
 		return list;
 	}
-
 	
 	@Override
 	public List<ZzimAptDetail> getZzimList(String userId) {
@@ -110,7 +105,5 @@ public class MemberServiceImpl implements MemberService {
 	public ZzimAptDetail getZzimListDetail(ZzimApt zzimApt) {
 		 return zzimAptMapper.getZzimListDetail(zzimApt);
 	}
-
-
 
 }

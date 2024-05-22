@@ -15,6 +15,7 @@ public interface MemberService {
 	public int deleteMember(String id);
 	public int updateMember(Member member);
 	List<Member> getMemberList();
+	
 	public void addZzim(ZzimApt zzimApt);
 	public int isZzimExists(ZzimApt zzimApt);
 	public List<ZzimAptDetail> getZzimListAllWithCnt();
