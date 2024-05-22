@@ -6,6 +6,7 @@ public class HouseStats {
     private List<HouseInfo> houseInfos;
     private List<YearlyDealStats> yearlyDealStats;
     private AreaDistribution areaDistribution;
+    private String gptComment;
 
     public List<HouseInfo> getHouseInfos() {
         return houseInfos;
@@ -30,5 +31,16 @@ public class HouseStats {
     public void setAreaDistribution(AreaDistribution areaDistribution) {
         this.areaDistribution = areaDistribution;
     }
+
+	public String getGptComment() {
+		return gptComment;
+	}
+
+	public void setGptComment(String gptComment) {
+		this.gptComment = gptComment;
+	}
+    
+    
+    
     
 }

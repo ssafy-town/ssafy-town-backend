@@ -15,6 +15,7 @@ public interface HouseService {
 	
 	HouseStats searchByKeywordWithStats(String keyword);
 	List<HouseInfo> searchByKeyword(String keyword);
+	String gptComment(Map<String, Object> params);
 	
 	HouseDetailStats searchByDetail(String aptCode);
 	

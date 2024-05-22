@@ -9,11 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.home.house.model.FindDeal;
+import com.home.house.model.GptForm;
 import com.home.house.model.HouseInfo;
 import com.home.house.service.HouseService;
 
@@ -89,6 +91,18 @@ public class HouseController {
     @GetMapping("/searchByKeywordWithStats")
     public ResponseEntity<?> searchByKeywordWithStats(@RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(houseService.searchByKeywordWithStats(keyword), HttpStatus.OK);
+    }
+    
+    // gpt 의견
+	// [GET] Param(keyword, yearlyDeal)
+	// ex)
+	// http://localhost/house/gptComment?keyword=진평&yearlyDeal="DealYear:2015 min...."
+    @GetMapping("/gptComment")
+    public ResponseEntity<?> gptComment(@RequestBody GptForm gptForm) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", gptForm.getKeyword());
+        params.put("yearlyDealStats", gptForm.getYearlyDealStats());
+        return new ResponseEntity<>(houseService.gptComment(params), HttpStatus.OK);
     }
     
     // 실거래가 검색 Without 통계 - 키워드
