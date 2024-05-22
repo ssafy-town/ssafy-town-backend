@@ -7,8 +7,8 @@
 * database : mybatis
 
 ## API
-<details>
-    * 회원
+
+ * 회원
     * 회원가입
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/21ab5579-de70-4761-a003-09191aa162c2)
     * 로그인
@@ -24,7 +24,6 @@
     * 회원 삭제
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/592bee76-99e2-485d-b5ed-a86a97516409)      
 
-</details>
 
 
 
@@ -41,11 +40,26 @@
  
 * 아파트 실거래가 조회
      * 실거래가 검색 - Input : 시도, 구군, 동  Output : 검색 결과, 통계
+      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/1ed5d750-5e6c-4b83-a862-337431ce82fb)
+      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/b1f814ab-8b19-4b6d-b67f-3f015d0b1846)
+      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/baabb33c-942a-4f2f-9fb9-652b897e85f4)
      * 실거래가 검색 - Input : keyword   Output : 검색 결과, 통계, gpt 의견
+       ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/a1daa05b-bac4-4666-9452-97c5da35ad45)
+     * gpt의 실거래가 통계에 관한 의견
+       ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/96541893-1c9b-404d-855e-57909ce696a1)
      * 실거래가 상세 검색
+       ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/1849e44c-6760-43dd-aaf0-888981c1533c)
+
  
 * 매물
      * 매물 글 등록
+       ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/2d4ca0de-6519-4e7c-9579-ebde82312572)
      * 매물 글 보기
+     * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/2eb11cb7-149a-44b2-909d-045b5e782e28)
+
      * 매물 글 업데이트
+     * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/52f3dda7-70a8-4be0-99c8-103134252d6e)
+
      * 매물 글 제거
+     * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/63993500-c644-4c0f-946b-b62dcaeeaf48)
+
