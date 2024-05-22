@@ -73,9 +73,11 @@ public class NewsController {
         // JSON response에서 필요한 정보 추출하기
         List<Map<String, Object>> newsList = new ArrayList<>();
         JsonNode itemsNode = jsonNode.get("items");
+        int newsIdCounter = 1; 
         if (itemsNode != null && itemsNode.isArray()) {
             for (JsonNode itemNode : itemsNode) {
                 Map<String, Object> newsItem = new LinkedHashMap<>(); // Use LinkedHashMap to maintain order
+                newsItem.put("id", newsIdCounter++); // Increment and assign ID
                 newsItem.put("title", removeHtmlTags(itemNode.get("title").asText()));
                 newsItem.put("link", itemNode.get("link").asText());
                 newsItem.put("description", removeHtmlTags(removeQuot(itemNode.get("description").asText())));
