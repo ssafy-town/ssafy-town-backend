@@ -23,7 +23,7 @@
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/7721ffb1-09bf-45b2-a620-e0926b2114d4)
     * 회원 삭제
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/592bee76-99e2-485d-b5ed-a86a97516409)      
-   </summary>
+
 </details>
 
 
