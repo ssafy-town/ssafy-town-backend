@@ -11,11 +11,18 @@
     * 회원가입
     * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/21ab5579-de70-4761-a003-09191aa162c2)
     * 로그인
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/b2298820-4569-492e-a9ef-366c7f8942a3)
     * 로그아웃
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/f5d3398e-60fc-4f68-b400-5e6c33c49a92)
     * 비밀번호 찾기
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/d239f868-d147-4841-9b4f-4d4a07770fc9)
     * 회원 검색
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/d5320c2c-3dde-4f18-a488-ad829bce9334)
     * 회원 정보 업데이트
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/7721ffb1-09bf-45b2-a620-e0926b2114d4)
     * 회원 삭제
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/592bee76-99e2-485d-b5ed-a86a97516409)
+
 
 * 북마크
      * 북마크 추가
