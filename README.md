@@ -9,6 +9,7 @@
 ## API
 * 회원
     * 회원가입
+    * ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/21ab5579-de70-4761-a003-09191aa162c2)
     * 로그인
     * 로그아웃
     * 비밀번호 찾기
