@@ -8,8 +8,7 @@
 
 ## API
 <details>
-   <summary>
-   * 회원
+    * 회원
     * 회원가입
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/21ab5579-de70-4761-a003-09191aa162c2)
     * 로그인
