@@ -40,8 +40,13 @@ public class NewsController {
 	// [GET] Param()
 	// ex)
 	// localhost/news
+<<<<<<< HEAD
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Map<String, Object>>> news() {
+=======
+    @GetMapping("")
+    public ResponseEntity<?> news() {
+>>>>>>> 3a9ae7e17006de27afee1a2db749bfb1da69cca2
         String clientId = "WpsYcPTYp47T6ZURym7F"; // 애플리케이션 클라이언트 아이디
         String clientSecret = "DrUaEdLwmq"; // 애플리케이션 클라이언트 시크릿
 
@@ -71,6 +76,7 @@ public class NewsController {
         }
 
         // JSON response에서 필요한 정보 추출하기
+<<<<<<< HEAD
         List<Map<String, Object>> newsList = new ArrayList<>();
         JsonNode itemsNode = jsonNode.get("items");
         if (itemsNode != null && itemsNode.isArray()) {
@@ -80,6 +86,20 @@ public class NewsController {
                 newsItem.put("link", itemNode.get("link").asText());
                 newsItem.put("description", removeHtmlTags(removeQuot(itemNode.get("description").asText())));
                 String pubDateStr = itemNode.get("pubDate").asText();
+=======
+        List<String> newsList = new ArrayList<>();
+        JsonNode itemsNode = jsonNode.get("items");
+        if (itemsNode != null && itemsNode.isArray()) {
+            for (JsonNode itemNode : itemsNode) {
+                String titleWithTags = itemNode.get("title").asText();
+                String title = removeHtmlTags(titleWithTags); // title에서 HTML 태그 제거
+                String link = itemNode.get("link").asText();
+                String descriptionWithTags = itemNode.get("description").asText();
+                String description = removeHtmlTags(removeQuot(descriptionWithTags)); // description에서 HTML 태그 제거, &quot 제거
+                String pubDateStr = itemNode.get("pubDate").asText();
+
+                // pubDateStr을 파싱하여 년, 월, 일, 시, 분, 초 파싱하기
+>>>>>>> 3a9ae7e17006de27afee1a2db749bfb1da69cca2
                 String[] pubDateComponents = parsePubDate(pubDateStr);
                 newsItem.put("year", Integer.parseInt(pubDateComponents[0]));
                 newsItem.put("month", Integer.parseInt(pubDateComponents[1]));
