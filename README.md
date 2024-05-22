@@ -7,7 +7,9 @@
 * database : mybatis
 
 ## API
-* 회원
+<details>
+   <summary>
+   * 회원
     * 회원가입
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/21ab5579-de70-4761-a003-09191aa162c2)
     * 로그인
@@ -21,7 +23,10 @@
     * 회원 정보 업데이트
      ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/7721ffb1-09bf-45b2-a620-e0926b2114d4)
     * 회원 삭제
-     ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/592bee76-99e2-485d-b5ed-a86a97516409)
+     ![image](https://github.com/ssafy-town/ssafy-town-backend/assets/102495970/592bee76-99e2-485d-b5ed-a86a97516409)      
+   </summary>
+</details>
+
 
 
 * 북마크
