@@ -130,7 +130,7 @@ public class HouseServiceImpl implements HouseService{
 	    }
 
 	    String prompt = "너는 부동산 전문 애널리스트야.\n\n\"" + keyword +
-	        "\"이라는 키워드에 대한 집계데이터를 줄게. 너의 분석결과, 전망 등을 정확히 5줄로 제시해줘."
+	        "\"이라는 키워드에 대한 집계데이터를 줄게. 너의 분석결과, 전망 등을 최대 5줄로 제시해줘."
 	        + " 유기적인 줄글로 작성해줘. 문항 나눠서 대답하지말고."
 	        + " 만약 문장이 부자연스럽게 끝난다면, 그 문장은 작성하지 않아도 돼. 온점(.)으로 끝나는게 자연스러운 문장이야\n\n" +
 	        yearlyDealStringBuilder.toString();
@@ -150,7 +150,7 @@ public class HouseServiceImpl implements HouseService{
 
 	    requestBody.put("messages", messages);
 	    requestBody.put("temperature", 0.7);
-	    requestBody.put("max_tokens", 150);
+	    requestBody.put("max_tokens", 500);
 
 	    HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
@@ -166,12 +166,7 @@ public class HouseServiceImpl implements HouseService{
 	                if (choice.containsKey("message")) {
 	                    Map<String, Object> message = (Map<String, Object>) choice.get("message");
 	                    if (message.containsKey("content")) {
-	                        String generatedContent = message.get("content").toString().trim();
-	                        // Trim the content until a period is encountered at the end
-	                        while (!generatedContent.endsWith(".")) {
-	                            generatedContent = generatedContent.substring(0, generatedContent.length() - 1).trim();
-	                        }
-	                        return generatedContent;
+	                        return message.get("content").toString().trim();
 	                    }
 	                }
 	            }
@@ -180,7 +175,6 @@ public class HouseServiceImpl implements HouseService{
 
 	    return "Error: Unable to generate response";
 	}
-
 
 	
 	
